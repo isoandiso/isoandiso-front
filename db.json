@@ -1,0 +1,66 @@
+{
+  "properties": [
+    {
+      "id": 1,
+      "title": "Casa Roland",
+      "description": "Hermosa casa de 3 habitaciones con jardín",
+      "price": 250000,
+      "locate": "Lima, Lima, Miraflores",
+      "postedAgo": "Publicado hace 3 semanas en Tacna, TA"
+    },
+    {
+      "id": 2,
+      "title": "Casa Guti",
+      "description": "Hermosa casa de 3 habitaciones con jardín",
+      "price": 250000,
+      "locate": "Lima, Lima, Miraflores",
+      "postedAgo": "Publicado hace 3 semanas en Tacna, TA"
+    },
+    {
+      "id": 3,
+      "title": "Casa Guti",
+      "description": "Hermosa casa de 3 habitaciones con jardín",
+      "price": 250000,
+      "locate": "Lima, Lima, Miraflores",
+      "postedAgo": "Publicado hace 3 semanas en Tacna, TA"
+    },
+    {
+      "id": "d840",
+      "name": "",
+      "price": "",
+      "tipoOperacion": "",
+      "tipoInmueble": "",
+      "subTipoInmueble": "",
+      "email": "",
+      "username": "",
+      "apellidos": "",
+      "dni": "",
+      "celular": ""
+    },
+    {
+      "id": "dfd5",
+      "tipoInmueble": "Departamento",
+      "subTipoInmueble": "Casa de ciudad",
+      "email": "rolando7035@gmail.com",
+      "username": "rolando",
+      "apellidos": "",
+      "dni": "",
+      "celular": "",
+      "department": "Lima",
+      "countprovincery": "Selecciona Provincia",
+      "district": "Selecciona Distrito",
+      "urbanization": "Selecciona Urbanización",
+      "file-upload": {},
+      "area": "",
+      "bedroom": "",
+      "garage": "",
+      "bathroom": "",
+      "kitchen": "",
+      "floor": "",
+      "priceIn": "Selecciona opción",
+      "price": "",
+      "title": "",
+      "description": ""
+    }
+  ]
+}
