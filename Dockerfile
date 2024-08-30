@@ -6,4 +6,4 @@ RUN npm install
 COPY . .
 RUN npm run build --prod
 EXPOSE 8080
-CMD [ "npx", "http-server", "dist/webiso" ]
+CMD [ "npx", "http-server", "dist/webiso/public/" ]
