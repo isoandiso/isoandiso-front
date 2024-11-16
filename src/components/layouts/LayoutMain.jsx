@@ -92,7 +92,7 @@ const LayoutMain = () => {
                         <div className="flex justify-between items-center px-5 md:px-8">
                             <div className="flex items-center pl-8">
                                 <Link to={"/"} className="text-white flex justify-start items-center font-semibold text-xl h-24 pr-4">
-                                    <img src="/public/img/logoss.png" alt="" width="70" height="20" />
+                                    <img src="/img/logoss.png" alt="" width="70" height="20" />
                                 </Link>
                                 <div
                                     className={`absolute ${isMenuOpen ? 'flex' : 'hidden'} h-screen z-30 bg-black bg-opacity-75 top-0 bottom-0 left-0 flex lg:flex right-0 justify-center items-center gap-5  font-bold p-3 lg:p-0 lg:static lg:bg-transparent lg:h-auto`}
@@ -153,14 +153,44 @@ const LayoutMain = () => {
                                             </Dropdown.Content>
                                         </Dropdown>
                                     ) : (
-                                        <Link
-                                            to="/login"
-                                            className="bg-purple1 hover:bg-gray-400 m-2 p-2 items-center flex text-white justify-center z-60"
-                                        >
-                                            <MdLogin className="text-2xl" />
-                                            <p className="text-sm font-urbanist">Iniciar Sesión</p>
+                                        <Dropdown itemColor="" radius="none">
+                                            <Dropdown.Trigger itemColor="blue">
+                                                <Button radius="none" className='bg-purple1 m-2 p-2 h-[42px] w-[135px] font-urbanist text-[17px]'>
+                                                    Iniciar Sesión
+                                                </Button>
 
-                                        </Link>
+                                            </Dropdown.Trigger>
+                                            <Dropdown.Content className='font-urbanist'>
+                                                <Dropdown.Item>
+                                                    <Link to="/">
+                                                        Usuario
+                                                    </Link>
+                                                </Dropdown.Item>
+                                                <Dropdown.Item>
+                                                    <Link to="/login">
+                                                        Empresa
+                                                    </Link>
+                                                </Dropdown.Item>
+                                                <Dropdown.Item>
+                                                    <Link to="/">
+                                                        Socio
+                                                    </Link>
+                                                </Dropdown.Item>
+                                            </Dropdown.Content>
+
+                                            {/*
+                                                <Link
+                                                    to="/login"
+                                                    className="bg-purple1 hover:bg-gray-400 m-2 p-2 items-center flex text-white justify-center z-60"
+                                                >
+                                                    <MdLogin className="text-2xl" />
+                                                    <p className="text-sm font-urbanist">Iniciar Sesión</p>
+
+                                                </Link>
+                                            */}
+                                        </Dropdown>
+
+                                        
                                     )
                                 }
                             </div>

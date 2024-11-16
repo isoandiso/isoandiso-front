@@ -20,22 +20,36 @@ function SignIn() {
         if (!terminos) {
             Swal.fire({
                 icon: "error",
-                title: "Oops...",
                 text: "Necesitas aceptar nuestros terminos y condiciones",
             });
             return
         }
-        const { confirm_password, ...data } = user
-        data.username = ''
 
-        const response = await register(data, setErrores)
-
-        setTimeout(() => {
-            setErrores([])
-        }, 5000)
-
-        if (response) {
-            navigate('/')
+        try {
+            const response = await fetch('http://localhost:3000/registroEmpresa', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: user.email,
+                    telefono: user.phone,
+                    contraseña: user.password,
+                }),
+            });
+    
+            const data = await response.json();
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    text: data.message,
+                });
+                navigate('/');  // Redirige después de un registro exitoso
+            } else {
+                setErrores([data.error]);  // Manejo de errores en el frontend
+            }
+        } catch (error) {
+            setErrores([error.message]);
         }
 
     };
@@ -60,8 +74,8 @@ function SignIn() {
                     </div>
                     {
                         errores.length > 0 ? (
-                            errores.map(error => (
-                                <p className='bg-red-500 border border-red-900 rounded p-1 text-white text-center font-black my-3'>{error}</p>
+                            errores.map((error,index) => (
+                                <p key={index} className='bg-red-500 border border-red-900 rounded p-1 text-white text-center font-black my-3'>{error}</p>
                             ))
                         ) : null
                     }
@@ -77,8 +91,12 @@ function SignIn() {
                                     defaultValue=""
                                     rules={{
                                         required: 'El correo electrónico es obligatorio',
+                                        maxLength: {
+                                            value: 100,
+                                            message: 'Longitud máxima 100',
+                                        },
                                         pattern: {
-                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                                             message: 'Ingrese un correo electrónico válido'
                                         }
                                     }}
@@ -99,60 +117,6 @@ function SignIn() {
                                 {errors.email && <span className="text-red-500 text-xs">{errors.email.message}</span>}
                             </label>
                         </div>
-                        <div className="col-span-full">
-                            <label
-                                htmlFor="first_name"
-                                className="relative border border-gray-200 shadow-sm focus-within:border-green-500 focus-within:ring-1 focus-within:ring-green-500 block text-sm font-medium leading-6 text-gray-900 bg-gray-200"
-                            >
-                                <Controller
-                                    name="first_name"
-                                    control={control}
-                                    defaultValue=""
-                                    rules={{ required: 'El nombre es obligatorio' }}
-                                    render={({ field }) => (
-                                        <input
-                                            {...field}
-                                            type="text"
-                                            id="first_name"
-                                            autoComplete="given-name"
-                                            className={`p-1 peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 block w-full py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6 ${errors.first_name ? 'ring-red-500' : ''}`}
-                                            placeholder="Nombres"
-                                        />
-                                    )}
-                                />
-                                <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-gray-200 p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs rounded-sm">
-                                    Nombres
-                                </span>
-                                {errors.first_name && <span className="text-red-500 text-xs">{errors.first_name.message}</span>}
-                            </label>
-                        </div>
-                        <div className="col-span-full">
-                            <label
-                                htmlFor="last_name"
-                                className="relative border border-gray-200 shadow-sm focus-within:border-green-500 focus-within:ring-1 focus-within:ring-green-500 block text-sm font-medium leading-6 text-gray-900 bg-gray-200"
-                            >
-                                <Controller
-                                    name="last_name"
-                                    control={control}
-                                    defaultValue=""
-                                    rules={{ required: 'Los apellidos son obligatorios' }}
-                                    render={({ field }) => (
-                                        <input
-                                            {...field}
-                                            type="text"
-                                            id="last_name"
-                                            autoComplete="family-name"
-                                            className={`p-1 peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 block w-full py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6 ${errors.last_name ? 'ring-red-500' : ''}`}
-                                            placeholder="Apellidos"
-                                        />
-                                    )}
-                                />
-                                <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-gray-200 p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs rounded-sm">
-                                    Apellidos
-                                </span>
-                                {errors.last_name && <span className="text-red-500 text-xs">{errors.last_name.message}</span>}
-                            </label>
-                        </div>
                         <div id="celular" className="col-span-full">
                             <label
                                 htmlFor="phone"
@@ -164,34 +128,34 @@ function SignIn() {
                                     defaultValue=""
                                     rules={{
                                         required: 'El número es obligatorio',
-                                        maxLength: {
-                                            value: 9,
-                                            message: 'El número debe tener un máximo de 9 dígitos'
-                                        },
                                         minLength: {
                                             value: 9,
-                                            message: 'El número debe tener al menos 9 dígitos'
-                                        },
-                                        pattern: {
-                                            value: /^\d*$/,
-                                            message: 'Solo se permiten números'
-                                        }
+                                            message: 'El número debe tener al menos 9 dígitos',
+                                          },
+                                          maxLength: {
+                                            value: 15,
+                                            message: 'El número no puede tener más de 20 dígitos',
+                                          },
                                     }}
                                     render={({ field }) => (
                                         <input
-                                            {...field}
-                                            type="number"
-                                            id="phone"
-                                            autoComplete="phone"
-                                            inputMode="numeric"
-                                            pattern="[0-9]{9}"
-                                            maxLength="9"
-                                            minLength="9"
-                                            className={`p-1 peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 block w-full py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6 ${errors.phone ? 'ring-red-500' : ''}`}
-                                            placeholder="Número celular"
+                                        {...field}
+                                        type="text" // Cambiamos de type="number" a type="text"
+                                        id="phone"
+                                        autoComplete="phone"
+                                        inputMode="numeric" // Asegura que se muestre el teclado numérico en móviles
+                                        className={`p-1 peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 block w-full py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6 ${errors.phone ? 'ring-red-500' : ''}`}
+                                        placeholder="Número celular"
+                                        
+                                        // Evento onInput para filtrar solo números
+                                        onInput={(e) => {
+                                            e.target.value = e.target.value.replace(/[^0-9]/g, ''); // Reemplaza todo lo que no sea número
+                                            field.onChange(e); // Actualiza el valor en react-hook-form
+                                        }}
                                         />
                                     )}
                                 />
+
                                 <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-gray-200 p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs rounded-sm">
                                     Número celular
                                 </span>
@@ -207,7 +171,17 @@ function SignIn() {
                                     name="password"
                                     control={control}
                                     defaultValue=""
-                                    rules={{ required: 'La contraseña es obligatoria' }}
+                                    rules={{ 
+                                        required: 'La contraseña es obligatoria',
+                                        maxLength: {
+                                            value: 20,
+                                            message: 'El número debe tener un máximo de 20 dígitos'
+                                        },
+                                        minLength: {
+                                            value: 8,
+                                            message: 'El número debe tener al menos 8 dígitos'
+                                        },
+                                     }}
                                     render={({ field }) => (
                                         <input
                                             {...field}
@@ -234,7 +208,17 @@ function SignIn() {
                                     name="confirm_password"
                                     control={control}
                                     defaultValue=""
-                                    rules={{ required: 'Por favor confirme su contraseña', validate: passwordMatchValidator }}
+                                    rules={{ 
+                                        required: 'Por favor confirme su contraseña',
+                                        maxLength: {
+                                            value: 20,
+                                            message: 'El número debe tener un máximo de 20 dígitos'
+                                        },
+                                        minLength: {
+                                            value: 8,
+                                            message: 'El número debe tener al menos 8 dígitos'
+                                        },
+                                        validate: passwordMatchValidator }}
                                     render={({ field }) => (
                                         <input
                                             {...field}

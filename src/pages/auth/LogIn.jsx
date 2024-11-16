@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import useUser from "../../hooks/useUser";
-import dep2 from "/public/img/dep2.jpeg";
 import { useNavigate } from "react-router-dom";
 
 function LogIn() {
@@ -26,16 +25,15 @@ function LogIn() {
     return (
         <div
             className="min-h-full flex justify-center items-center mx-auto md:px-6 py-5 md:py-12 lg:px-8"
-            style={{ backgroundImage: "url('/public/img/dep2.jpeg')" }}
         >
             <div className="bg-white bg-opacity-100 ml-4 mr-4 mb-10 p-6 w-full rounded max-w-3xl font-urbanist flex flex-row justify-center space-x-8">
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                        <img
+                        {/*<img
                             className="mx-auto h-10 w-auto"
-                            src="/public/img/logo.png"
+                            src=""
                             alt="my Company"
-                        />
+                        />*/}
                         <h2 className="mt-10 mb-5 text-center text-2xl font-bold leading-9  text-black font-ubuntu ">
                             Iniciar sesión
                         </h2>
@@ -104,12 +102,17 @@ function LogIn() {
                             )}
                         </div>
                         <div>
-                            <button
-                                type="submit"
-                                className="w-full justify-center bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded"
+                            <Link
+                                to="/acquisitions"
+                                className="font-semibold leading-6 text-green-500 hover:text-sky-800"
                             >
-                                Ingresar
-                            </button>
+                                    <button
+                                    type="submit"
+                                    className="w-full justify-center bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded"
+                                >
+                                    Ingresar
+                                </button>
+                            </Link>
                         </div>
                     </form>
                     <p className="mt-10 text-center text-sm text-black">
@@ -121,9 +124,6 @@ function LogIn() {
                             Registrarse
                         </Link>
                     </p>
-                </div>
-                <div className="hidden lg:block w-160 ">
-                    <img src={dep2} alt="" className="rounded w-100 h-100 object-cover" />
                 </div>
             </div>
 
