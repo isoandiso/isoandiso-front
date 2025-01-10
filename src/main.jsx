@@ -131,11 +131,16 @@ const router = createBrowserRouter(
           path: 'actividad'
         },
         {
+          element: <Acquisitions />,
+          path: 'acquisitions'
+        },
+        {
           path: "*",
           element: <Navigate to="/usuario/cuenta" replace />
         }
       ]
     },
+    /*
     {
       path: '/ia',
       element: <LayoutAI />,
@@ -151,13 +156,7 @@ const router = createBrowserRouter(
         // },
       ]
     },
-    {
-      path: '/acquisitions',
-      element: <Acquisitions />,
-      children: [
-      ]
-    },
-
+    */
   ]
 )
 

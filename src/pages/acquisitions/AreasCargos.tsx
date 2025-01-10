@@ -1,163 +1,164 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { MdDelete } from "react-icons/md";
+import Swal from 'sweetalert2';
 import Styles from './styles.module.css'
+import {apiCallsCompany,apiCallsCompanyArea} from '../../settings/apiCalls'
 
-function AreasCargos() {
+function AreasCargos(props) {
+  
+  const {user,getUser} = props;
 
-  //FORMULARIO
+  //TYPE
 
-  ///(ID: MOOKEADO)
-  const [id,setId] = useState(0)
-  //ÁREA
-  const [área,setÁrea] = useState('')
-  function áreaChange(event){
-    setÁrea(event.target.value)
+  //VARIABLES
+
+  const [name,setName] = useState('')
+  const [charges, setCharges] = useState<string[]>(Array(10).fill(''));
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  //FUNCIONES
+
+  //FRONTEND
+
+  async function deleteOnClick(siteId){
+    await apiCallsCompanyArea._deleteCompanyArea(siteId);
+    await getUser();
   }
-  //CARGOS
-  const [cargos, setCargos] = useState<string[]>(['', '', '', '', '', '', '','','','']);
-  function cargoChange(index: number, event) {
-    const newCargos = [...cargos];
-    newCargos[index] = event.target.value;
-    setCargos(newCargos);
-  }
-  //SUBMIT
-  function handleSubmit(event){
+
+  function _handleInputChange(index: number, value: string) {
+    const newCargos = [...charges];
+    newCargos[index] = value;
+    setCharges(newCargos);
+  };
+  
+  async function _submit(event){
     event.preventDefault();
-    //(sí ya tiene en la lista el área que quiere agregar no la agrega a la lista)
-    if(!áreas.some((áreaa) => áreaa.nombre === área)){
-      setId(id => id+1)
-      setÁreas(áreas => [...áreas, {id:id,nombre:área,cargos:cargos}])
-      setÁrea('')
-      setCargos(['', '', '', '', '', '', '','','',''])
-      document.getElementById("áreasCargoForm")?.onsubmit
+    setIsSubmitting(true)
+    const filteredCargos = charges.filter((charge) => charge.trim() !== "");
+    if(name!='' && filteredCargos.length != 0){
+      const area = await apiCallsCompanyArea._createCompanyArea(name.trim(),filteredCargos)
+      const company = area ? await apiCallsCompany._addAreaIdToCompany(user._id,area._id) : null;
+      if (company){
+        // Si todas las respuestas fueron exitosas
+        await Swal.fire({
+          icon: 'success',
+          text: 'Area agregada correctamente !!!',
+          confirmButtonText: 'Entendido'
+        })
+        await getUser();
+        setIsSubmitting(false);
+      }
     }
   }
 
-  //
+  //USE EFFECT
 
-  //LISTA DE ÁREAS
-
-  //ÁREAS CON SUS CARGOS
-  type Área = {
-    id: number,
-    nombre: string,
-    cargos:string[]
-  };
-  const [ áreas,setÁreas] =useState<Área[]>([])  
-
-  //CARGOS DE LA LISTA SELECCIONADA
-  const [cargosDelÁreaSeleccionadaEnLaLista,setCargosDelÁreaSeleccionadaEnLaLista] = useState<string[]>([])
-
-  //ÁREA SELECCIONADA EN LA LISTA DE ÁREAS
-  function áreaInÁreasListSelected(index){
-    setCargosDelÁreaSeleccionadaEnLaLista(áreas[index].cargos )
-  }
-
-  //EN LA PRIMERA RENDERIZACIÓN SE LLAMA A LOS DATOS A BACKEND
-  useEffect(()=>{
-    /*fetch.()...
-    */
-  },[])
+  //DESSIGN
+  
   return (
 
-        <form id="áreasCargoForm" onSubmit={handleSubmit}>   
+        <form onSubmit={_submit}>   
+
+              <h1 style={{
+                                paddingLeft: '60px',
+                                fontSize: '30px',
+                                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
+                                backgroundColor:'#2c3792',
+                                color:'white',
+                                textAlign:'center'
+                            }}>
+                                <strong>AREAS/CARGOS</strong>
+              </h1>
               
               <div style={{
                         display: 'flex', 
-                        backgroundColor: 'white',
-                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                        borderRadius: '10px',
-                        padding: '60px',
-                        margin: '8px',
                         flexDirection: 'column',
                         justifyContent: 'space-around'
                     }}>
 
-                      {/* PRIMERA PARTE */}
                       <div style={{display:'flex', justifyContent: 'space-between', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 8px', borderRadius:'10px',padding:'15px', margin: '20px'}}>
+                          
+                          {/* ÁREAS Y CARGOS */}
                           <div style={{width: '75%'}}>
-                              {/* Áreas */}
+                              {/* Área */}
                               <div>
                                   <p><strong>Área:</strong></p>
-                                  <input required name="área" type="text" className={Styles.inputDecorated} placeholder='Área' onChange={áreaChange} value={área}/>
+                                  <input required name="área" type="text" className={Styles.inputDecorated} placeholder='Área' value={name} onChange={(e) => setName(e.target.value)} maxLength={100}/>
                               </div>
                               
                               {/* Cargos */}
                               <div>
-                                  <p><strong>Cargos:</strong></p>
-                                  <div className={Styles.divAreasCargos_Cargos}>
-                                    {cargos.map((cargo, index) => (
-                                      <div key={index}>
-                                        <input
-                                          required={index==0}
-                                          type="text"
-                                          className={Styles.inputDecorated}
-                                          placeholder={`Cargo ${index + 1}`}
-                                          value={cargo}
-                                          onChange={(event) => cargoChange(index, event)}
-                                        />
-                                        {index == 0 && <p style={{fontSize: '12px', color: 'red', marginBottom: '40px'}}> *Colocar aquí el cargo de mayor jerarquía, Ej: Jefe</p>}
-                                      </div>
-                                      
-                                    ))}
+                                  <p>
+                                    <strong>Cargos:</strong>
+                                  </p>
+                                  <div style={{display:'flex',flexWrap:'wrap'}}>
+                                      {charges.map((charge, index) => (
+                                        <div key={index} style={{ marginBottom: "10px" }}>
+                                          <input
+                                            type="text"
+                                            className={Styles.inputDecorated}
+                                            placeholder={`Cargo ${index + 1}`}
+                                            value={charge}
+                                            onChange={(e)=> _handleInputChange(index, e.target.value)}
+                                            maxLength={100}
+                                            required={index === 0}
+                                          />
+                                          {index === 0 && <p style={{fontSize: '12px', color: 'red', fontStyle:'italic'}}> *colocar aquí el cargo de mayor jerarquía, Ej: Jefe.</p>}
+                                        </div>
+                                      ))}
                                   </div>
-                              </div>
-                              
+                                </div>
                           </div>
 
+                          {/* SUBMIT */}
                           <div style={{alignContent: 'end'}}>
-                              <button type="submit" style={{ marginTop: '20px', padding: '10px 20px', borderRadius: '5px', backgroundColor: '#0B25A4', color: 'white', border: 'none', cursor: 'pointer', width: '250px' }}>
-                                Agregar
-                              </button>
+                                  <button disabled={isSubmitting} type="submit" style={{ marginTop: '20px', padding: '10px 20px', borderRadius: '5px', backgroundColor: isSubmitting ? 'gray' : '#0B25A4', color: 'white', border: 'none', cursor: 'pointer', width: '250px' }}>
+                                    Agregar
+                                  </button>
                           </div>
+
                       </div>
 
-                      {/* SEGUNDA PARTE */}
-                      {
-                        áreas.length > 0
-                        
-                        && 
+                      {/* TABLA */}
+                      <div style={{padding:'36px', marginBottom:'40px'}}>
+                      <table style={{width: '100%', borderCollapse: 'collapse'}}>
+                            <thead style={{backgroundColor: '#0B25A4', color: 'white', border: '1px solid black'}}>
+                                <tr>
+                                    <th style={{border: '1px solid black', padding: '8px'}}>NOMBRE DEL ÁREA</th>
+                                    <th style={{border: '1px solid black', padding: '8px'}}>CARGOS</th>
+                                    <th style={{border: '1px solid black', padding: '8px'}}></th>
+                                </tr>
+                            </thead>
 
-                        <div style={{ display:'flex', justifyContent: 'space-between', margin:'20px'}}>
-                                {/*areas */}
-                                <div style={{width:'25%'}}>
-                                      <p><strong>Áreas:</strong></p>
-                                      <div style={{display:'flex',flexDirection:'column-reverse'}}>
-                                      {
-                                            áreas.map((Área, index) => 
-                                                <div key={Área.id} style={{cursor:'pointer'}} onClick={()=> áreaInÁreasListSelected(index)}>
-                                                  <p>{Área.nombre}</p>
-                                                </div>
-                                            )
-                                      }
-                                      </div>
-                                </div>
-
-                                {/*cargos */}
-                                <div style={{width:'75%'}}>
-                                              <p><strong>Cargos:</strong></p>
-                                              <div style={{maxHeight: '140px', overflowY: 'scroll', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '10px', padding: '10px',}}>
-                                                  <div style={{cursor:'pointer'}}>
-                                                    {
-                                                      cargosDelÁreaSeleccionadaEnLaLista.length == 0
-                                                      
-                                                      ? 
-
-                                                      áreas[áreas.length-1].cargos.map((cargo, index) =>   
-                                                        <p key={index} style={{margin:'4px 0px 4px 4px'}}>{cargo}</p>
+                            <tbody style={{textAlign: 'center'}}>
+                                {
+                                    user.areaIds.map((area, index) => {
+                                        return (
+                                            <tr key={index} style={{border: '1px solid black'}}>
+                                                <td style={{border: '1px solid black', padding: '8px'}}>
+                                                    <p>{area.name}</p>
+                                                </td>
+                                                
+                                                <td style={{border: '1px solid black', padding: '8px'}}>
+                                                    {area.charges.map((charge,index)=>{
+                                                      return (
+                                                        <p key={index}>{charge}</p>
                                                       )
+                                                    })}
+                                                </td>
 
-                                                      :
-                                                      
-                                                      cargosDelÁreaSeleccionadaEnLaLista.map((cargo, index) =>   
-                                                        <p key={index} style={{margin:'4px 0px 4px 4px'}}>{cargo}</p>
-                                                      )
-                                                    }
-
-                                                </div>
-                                              </div>
-                                  </div>
-                        </div>
-                      }
+                                                <td style={{border: '1px solid black', padding: '8px'}}>
+                                                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                                                        <MdDelete key={1} onClick={() => deleteOnClick(area._id)} style={{cursor: 'pointer', color: 'red'}} size={27}></MdDelete>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                      </div>
                 </div>
         </form>
       

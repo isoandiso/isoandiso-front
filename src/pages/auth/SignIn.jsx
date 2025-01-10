@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import useUser from '../../hooks/useUser';
 import { useNavigate } from 'react-router-dom';
-import dep3 from "/img/dep3.jpeg";
-// daniel
 function SignIn() {
 
     const navigate = useNavigate()
@@ -18,38 +16,33 @@ function SignIn() {
 
     const onSubmit = async (user) => {
         if (!terminos) {
-            Swal.fire({
+            await Swal.fire({
                 icon: "error",
                 text: "Necesitas aceptar nuestros terminos y condiciones",
             });
             return
         }
 
-        try {
-            const response = await fetch('http://localhost:3000/registroEmpresa', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: user.email,
-                    telefono: user.phone,
-                    contraseña: user.password,
-                }),
+        const registroExitoso = await register(
+            {
+                email: user.email,
+                phone: user.phone,
+                password: user.password,
+            },
+            setErrores
+        );
+
+        if (registroExitoso) {
+            await Swal.fire({
+                icon: 'success',
+                text: "Registro exitoso",
             });
-    
-            const data = await response.json();
-            if (response.ok) {
-                Swal.fire({
-                    icon: 'success',
-                    text: data.message,
-                });
-                navigate('/');  // Redirige después de un registro exitoso
-            } else {
-                setErrores([data.error]);  // Manejo de errores en el frontend
-            }
-        } catch (error) {
-            setErrores([error.message]);
+            navigate('/usuario/acquisitions');  // Redirige después de un registro exitoso
+        } else {
+            await Swal.fire({
+                icon: 'error',
+                text: "Error en el registro. Verifique los datos ingresados.",
+            });
         }
 
     };
@@ -63,11 +56,11 @@ function SignIn() {
             <div className='bg-white items-center rounded bg-opacity-100 ml-4 mr-4 mb-8 p-6 font-urbanist flex flex-row justify-center space-x-8 w-full max-w-4xl'>
                 <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                        <img
+                        {/* <img
                             className="mx-auto h-10 w-auto"
                             src="/public/img/logo.png"
                             alt="my Company"
-                        />
+                        /> */}
                         <h2 className="mt-6 mb-5 text-center text-2xl font-bold leading-9  text-black font-ubuntu ">
                             Nuevo registro
                         </h2>
@@ -79,7 +72,7 @@ function SignIn() {
                             ))
                         ) : null
                     }
-                    <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit)}>
+                    <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit)} method="POST">
                         <div className="col-span-full">
                             <label
                                 htmlFor="email"
@@ -256,10 +249,6 @@ function SignIn() {
                             </button>
                         </div>
                     </form>
-
-                </div>
-                <div className="hidden rounded lg:block w-160">
-                    <img src={dep3} alt="" className="rounded w-100 h-120 object-cover" />
                 </div>
             </div>
         </div>

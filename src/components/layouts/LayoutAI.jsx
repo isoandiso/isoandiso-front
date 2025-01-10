@@ -157,7 +157,6 @@ const LayoutAI = () => {
                             <p className='text-gray-700 font-ubuntu  font-bold text-base'>Accesos directos</p>
                             <nav>
                                 <p className='p-2 hover:text-blue-900'>Inicio</p>
-                                <p className='p-2 hover:text-blue-900'>Buscar propiedades</p>
                                 <p className='p-2 hover:text-blue-900'>Asesores</p>
                                 <p className='p-2 hover:text-blue-900'>Contactos</p>
                                 <p className='p-2 hover:text-blue-900'>Nosotros</p>

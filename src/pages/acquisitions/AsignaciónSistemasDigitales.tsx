@@ -1,115 +1,180 @@
 import React, { useEffect, useState } from 'react';
-import Select from 'react-select';
-import Styles from './styles.module.css'
+import Styles from './styles.module.css';
+import { MdDelete } from "react-icons/md";
+import Swal from 'sweetalert2';
+import {apiCallsCompanyArea, apiCallsIso} from '../../settings/apiCalls'
 
-function AsignaciónSistemasDigitales() {
+function AsignaciónSistemasDigitales(props) {
 
-///(ID: MOOKEADO)
-const [id,setId] = useState(0)
+const {user, getUser} = props
 
-// ÁREAS
-const [áreas, setÁreas] = useState<string[]>([]);
+//TYPE
 
-//ÁREA SELECCIONADA
-const [áreaSelected, setÁreaSelected] = useState('')
-function áreaSelectedhandle(index){
-  setÁreaSelected(áreas[index])
-}
-
-// ISOS
-const [isos, setIsos] = useState<{ value: string; label: string }[]>([]);
-const [selectedIsos, setSelectedIsos] = useState<{ value: string; label: string }[]>([]);
-
-const handleIsosChange = (selectedOptions) => {
-  setSelectedIsos(selectedOptions || []);
+type CompanyAcquisitionType = {
+  _id: string;
+  name: string;
 };
 
-const handleSubmit = (event) => {
-    event.preventDefault();
-    //(sí ya tiene en la lista el área que quiere agregar no la agrega a la lista)
-    if(áreaSelected==''){
-      alert("Seleccione un área")
-    }else if(!áreasList.some((área) => área.nombre === áreaSelected)){
-      const selectedValues = selectedIsos.map((iso) => iso.value);
-      setId(id => id+1)
-      setÁreasList(áreasList => [...áreasList, {id:id,nombre:áreaSelected,isos:selectedValues}])
-      setSelectedIsos([])
-      setÁreaSelected('')
-      document.getElementById("asignaciónSistemasDigitalesForm")?.onsubmit
+type CompanyAcquisition = {
+  _id: string;
+  isoIds:Iso[];
+  acquisitionTypeId:CompanyAcquisitionType;
+  acquisitionDate:Date;
+  expirationDate:Date | null;
+  invoiceLink: string | null; 
+};
+
+type CompanyArea = {
+  _id: string;
+  name: string;
+  charges: string[];
+  isoIds:Iso[];
+  responsibleWorkerId: string;
+}
+
+type Iso = {
+  _id: string;
+  name: string;
+};
+
+//VARIABLES
+
+const [companyAreas, setCompanyAreas] = useState<CompanyArea[]>([]);
+const [acquiredIsos,setAcquiredIsos] = useState<Iso[]>([]);
+const [acquiredIsosNotAssignedInTheAreaSelected,setAcquiredIsosNotAssignedInTheAreaSelected] = useState<Iso[]>([]);
+
+const [selectedArea,setSelectedArea] = useState<CompanyArea | null>(null);
+const [selectedIsosIds,setSelectedIsosIds] = useState<string[]>([]);
+
+const [isSubmitting, setIsSubmitting] = useState(false);
+
+//FUNCIONES
+
+//FRONTEND
+
+async function deleteIsosOfArea(areaId) {
+  await apiCallsCompanyArea._deleteIsosOfArea(areaId);
+  await getUser();
+}
+
+async function save(e){
+  e.preventDefault();
+  setIsSubmitting(true);
+
+  if(selectedArea === null){
+    await Swal.fire({
+      icon: 'warning',
+      text: 'Seleccione un área',
+      confirmButtonText: 'Entendido'
+    });
+    setIsSubmitting(false);
+    return
+  }
+
+  if(selectedIsosIds.length===0){
+    await Swal.fire({
+      icon: 'warning',
+      text: 'Seleccione al menos una iso',
+      confirmButtonText: 'Entendido'
+    });
+    setIsSubmitting(false);
+    return
+  }
+
+  //guardamos las isos en el área
+  const results = await Promise.all(
+    selectedIsosIds.map((isoId) => apiCallsCompanyArea._addIso(selectedArea._id, isoId))
+  );
+  
+  // Verifica si alguna de las llamadas no retorno su dato.
+  const failedResults = selectedIsosIds.filter((_, index) => results[index] === undefined);
+  
+  if (failedResults.length > 0) {
+    await Swal.fire({
+      icon: 'error',
+      text: 'Error en una o más asignaciones de las isos',
+      confirmButtonText: 'Entendido'
+    })
+  } else{
+    await Swal.fire({
+      icon: 'success',
+      text: 'Se agregó/agregaron las isos al área correctamente',
+      confirmButtonText: 'Entendido'
+    });
+  }
+
+  setSelectedIsosIds([]);
+  await getUser();
+  setIsSubmitting(false);
+}
+
+//USE EFFECT
+
+useEffect(() => {
+  //agarramos todas las isos adquiridas
+  const _acquiredIsos:Iso[] = user.acquisitionIds.flatMap((acquisition:CompanyAcquisition)=>acquisition.isoIds.map(iso=>iso));
+
+  //si las isos "RRHH" y "ISO 9001" no se encuentran en las isos adquiridas las agregamos porque necesitará asignar dichas isos la empresa 
+  async function addIsosRRHHAnd9001(){
+    if(!_acquiredIsos.some(iso=>iso.name.startsWith("RRHH"))){ 
+      _acquiredIsos.push(await apiCallsIso._getIsoByNameStartWith("RRHH"));
     }
-};
+    if(!_acquiredIsos.some(iso=>iso.name.startsWith("ISO 9001"))){
+      _acquiredIsos.push(await apiCallsIso._getIsoByNameStartWith("ISO 9001"));
+    }
+  }
+  addIsosRRHHAnd9001();
+  
+  setAcquiredIsos(_acquiredIsos);
+},[]);
 
-//
+useEffect(() => {
+  //agarramos todas las áreas de la empresa
+  const _companyAreas:CompanyArea[] = user.areaIds; 
+  setCompanyAreas(_companyAreas);
 
-//LISTA DE ÁREAS
+  let selectedAreaUpdated;
+  if(selectedArea){
+    selectedAreaUpdated = _companyAreas.find(area=>area._id===selectedArea._id);
+  }
 
-//ÁREAS CON SUS ISOS
-type Área = {
-  id: number,
-  nombre: string,
-  isos:string[]
-};
-const [áreasList,setÁreasList] =useState<Área[]>([])
+  if(selectedAreaUpdated){
+    //actualizamos el area seleccionada con las isos que se le agregaron o eliminaron , si el área ya tiene todas las isos adquiridas asignadas entonces se le pondrá null
+    const _acquiredIsos:Iso[] = user.acquisitionIds.flatMap((acquisition:CompanyAcquisition)=>acquisition.isoIds.map(iso=>iso));
+    setSelectedArea((selectedAreaUpdated as CompanyArea).isoIds.length != _acquiredIsos.length ? selectedAreaUpdated : null);
+    setCompanyAreas(_companyAreas);
+  }else{
+    setCompanyAreas(_companyAreas);
+  }
 
-//ISOS DE LA LISTA SELECCIONADA
-const [isosDelÁreaSeleccionadaEnLaLista,setIsosDelÁreaSeleccionadaEnLaLista] = useState<string[]>([])
+},[user.areaIds]);
 
-//ÁREA SELECCIONADA EN LA LISTA DE ÁREAS
-function áreaInÁreasListSelected(index){
-  setIsosDelÁreaSeleccionadaEnLaLista(áreasList[index].isos)
-}
+useEffect(() => {
+  if(selectedArea){
+    const _acquiredIsosNotAssignedInTheAreaSelected = acquiredIsos.filter(iso=>!selectedArea.isoIds.some(_iso=>_iso._id===iso._id));
+    setAcquiredIsosNotAssignedInTheAreaSelected(_acquiredIsosNotAssignedInTheAreaSelected);
+  }
+},[selectedArea]);
 
-//EN LA PRIMERA RENDERIZACIÓN SE LLAMA A LOS DATOS A BACKEND
-useEffect(()=>{
-  /*fetch.()...
-  */
-
-  //(llamamos a la base de datos para que nos de las áreas que registró el usuario en módulo ÁREAS/CARGOS)
-  /*fetch.()...
-  */
-  //mook
-  setÁreas(['Área1','Área2','Área3','Área4'])
-
-  //(llamamos a la base de datos para que nos traiga todas las isos)
-  /*fetch.()...
-  */
-  //mook
-  setIsos([
-    { value: 'ISO 9001', label: 'ISO 9001' },
-    { value: 'ISO 45001', label: 'ISO 45001' },
-    { value: 'ISO 14001', label: 'ISO 14001' },
-    { value: 'ISO 27001', label: 'ISO 27001' },
-    { value: 'ISO 19601', label: 'ISO 19601' },
-    { value: 'ISO 20121', label: 'ISO 20121' },
-    { value: 'ISO 30301', label: 'ISO 30301' },
-    { value: 'ISO 39001', label: 'ISO 39001' },
-    { value: 'ISO 13485', label: 'ISO 13485' },
-    { value: 'ISO 22001', label: 'ISO 22001' },
-    { value: 'ISO 50001', label: 'ISO 50001' },
-    { value: 'ISO 21001', label: 'ISO 21001' },
-    { value: 'ISO 28001', label: 'ISO 28001' },
-    { value: 'ISO 37001', label: 'ISO 37001' },
-    { value: 'ISO 17020', label: 'ISO 17020' },
-    { value: 'ISO 29001', label: 'ISO 29001' },
-    { value: 'ISO 26001', label: 'ISO 26001' },
-    { value: 'ISO 15189', label: 'ISO 15189' },
-    { value: 'ISO 27701', label: 'ISO 27701' },
-    { value: 'ISO 16949', label: 'ISO 16949' },
-    { value: 'ISO 17025', label: 'ISO 17025' },
-    { value: 'ISO 22716', label: 'ISO 22716' },
-    { value: 'ISO 22301', label: 'ISO 22301' },
-    { value: 'ISO 24001', label: 'ISO 24001' },
-    { value: 'ISO 17021', label: 'ISO 17021' },
-  ]);
-},[])
+//DESIGN
 
   return (
 
-        <form id="asignaciónSistemasDigitalesForm" onSubmit={handleSubmit}>   
+        <form onSubmit={()=>{}}>   
+
+              <h1 style={{
+                                paddingLeft: '60px',
+                                fontSize: '30px',
+                                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
+                                backgroundColor:'#2c3792',
+                                color:'white',
+                                textAlign:'center'
+                            }}>
+                                <strong>ASIGNACIÓN  DE SISTEMAS DIGITALES</strong>
+              </h1>
               
               <div style={{
                         display: 'flex', 
-                        backgroundColor: 'white',
                         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                         borderRadius: '10px',
                         padding: '30px',
@@ -117,97 +182,110 @@ useEffect(()=>{
                         justifyContent: 'space-around'
                     }}>
 
-
-
-                      {/* PRIMERA PARTE */}
+                      {/* ÁREAS E ISOS */}
                       <div>
-                            <p><strong>Áreas:</strong></p>
-                            <br />
-                            {
-                              áreas.map((área,index)=>{
-                                return <p key={index} onClick={()=> áreaSelectedhandle(index)} style={{cursor:'pointer'}}>{área}</p>
-                              })
-                            }
-                      </div>
-
-                      {/* SEGUNDA PARTE */}
-                      <div>
-                            <p><strong>Isos:</strong></p>
-                            <select required style={{ padding: '8px', margin: '10px 0', borderRadius: '4px', border: '1px solid #ccc', width: '100%'}}>
+                            <p style={{marginBottom:'15px'}}><strong>Áreas:</strong></p>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                              
+                              {/* //Mostramos todas las áreas que no tienen asignadas ninguna iso */}
+                              <select className={Styles.inputDecorated} onChange={(e)=> {setSelectedArea(companyAreas.find(area=>area._id === e.target.value) || null);setSelectedIsosIds([]);}} value={selectedArea ? selectedArea._id : ""}>
+                                <option value="">Seleccione un área</option>
                                 {
-                                  isos.length > 0
-                                  
-                                  &&
-                                  
-                                  <>
-                                      <option value="">Seleccione sistema digital</option>
-                                      {
-                                        isos.map((iso,index) => 
-                                          <option key={index} value={iso.value}>{iso.value}</option>
-                                        )
-                                      }
-                                  </>
+                                    companyAreas
+                                    //filtramos para mostrar solo las áreas que no tienen todas las isos asignadas y que por endé se le pueden seguir asignando isos
+                                    .filter(area=>area.isoIds.length != acquiredIsos.length)
+                                    .map((companyArea,companyAreaIndex)=>{
+                                      return <option key={companyAreaIndex} value={companyArea._id}>{companyArea.name}</option>
+                                    })
                                 }
-                            </select>
+                              </select>
+                              <br />
+                              {
+                                selectedArea &&
+
+                                //Mostramos todas las isos adquiridas que no están asignadas al área seleccionada
+                                <>
+                                  <p style={{marginBottom:'15px'}}><strong>Isos:</strong></p>
+                                  <div>
+                                      {
+                                        acquiredIsosNotAssignedInTheAreaSelected
+                                        .map((iso,isoIndex)=>{
+                                          return <div key={isoIndex}>
+                                                    <input key={isoIndex} type="checkbox" name="ISOS" value={iso._id} 
+                                                    checked={selectedIsosIds.includes(iso._id)}
+                                                    onChange={(e) => {
+                                                    //saca o no el iso del "selectedIsos" dependiendo si el usuario lo checkea o descheckea
+                                                    setSelectedIsosIds((prev) => {
+                                                      if (e.target.checked) {
+                                                        return [...prev, iso._id];
+                                                      } else {
+                                                        return prev.filter((id) => id !== iso._id);
+                                                      }
+                                                    })}}/>
+                                                    <label style={{marginLeft: '8px'}}>{iso.name}</label>
+                                                </div> 
+                                        })
+                                      }
+                                  </div>
+                                </>
+                              }
+                            </div>
                       </div>
 
-                      {/* TERCERA PARTE */}
+                      {/* SUBMIT */}
                       <div style={{alignContent: 'end'}}>
-                              <button type="submit" style={{ marginTop: '20px', padding: '10px 20px', borderRadius: '5px', backgroundColor: '#0B25A4', color: 'white', border: 'none', cursor: 'pointer', width: '250px' }}>
-                                Agregar
+                              <button disabled={isSubmitting} type="submit" style={{ marginTop: '20px', padding: '10px 20px', borderRadius: '5px', backgroundColor: isSubmitting ? 'gray' : '#0B25A4', color: 'white', border: 'none', cursor: 'pointer', width: '250px' }} onClick={(e)=>save(e)}>
+                                Guardar
                               </button>
                       </div>
-                      
                 </div>
 
-                {/*TABLA*/}
-                {
-                        áreasList.length > 0
-                        
-                        && 
+                {/* TABLA */}
+                <div style={{padding:'36px', marginBottom:'40px'}}>
+                        <table style={{width: '100%', borderCollapse: 'collapse'}}>
+                                <thead style={{backgroundColor: '#0B25A4', color: 'white', border: '1px solid black'}}>
+                                    <tr>
+                                        <th style={{border: '1px solid black', padding: '8px'}}>NOMBRE DEL ÁREA</th>
+                                        <th style={{border: '1px solid black', padding: '8px'}}>ISOS ASIGNADAS</th>
+                                        <th style={{border: '1px solid black', padding: '8px'}}></th>
+                                    </tr>
+                                </thead>
 
-                        <div style={{ display:'flex', justifyContent: 'space-between', margin:'20px'}}>
-                                {/*areas */}
-                                <div>
-                                      <p><strong>Áreas:</strong></p>
-                                      <div style={{display:'flex',flexDirection:'column-reverse'}}>
-                                      {   
-                                            áreasList.map((área, index) => 
-                                                <div key={área.id} style={{cursor:'pointer'}} onClick={()=> áreaInÁreasListSelected(index)}>
-                                                  <p>{área.nombre}</p>
+                                <tbody style={{textAlign: 'center'}}>
+                                {
+                                        //Areas con isos asignadas
+                                        companyAreas.filter(area=>area.isoIds.length>0)
+                                        .map((area: CompanyArea, index) => {
+
+                                          // Generamos la fila de la tabla
+                                          return (
+                                            <tr key={index} style={{ border: '1px solid black' }}>
+                                              <td style={{ border: '1px solid black', padding: '8px' }}>
+                                                <p>{area.name}</p>
+                                              </td>
+
+                                              <td style={{ border: '1px solid black', padding: '8px' }}>
+                                                {area.isoIds.map((iso, isoIndex) => (
+                                                    <p key={isoIndex}>{iso.name}</p>
+                                                  ))}
+                                              </td>
+
+                                              <td style={{ border: '1px solid black', padding: '8px' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                  <MdDelete
+                                                    style={{ cursor: 'pointer', color: 'red' }}
+                                                    size={27}
+                                                    onClick={()=>deleteIsosOfArea(area._id)}
+                                                  />
                                                 </div>
-                                            )
-                                      }
-                                      </div>
-                                      
-                                </div>
-
-                                {/*isos */}
-                                <div style={{width:'75%'}}>
-                                              <p><strong>Isos:</strong></p>
-                                              <div style={{maxHeight: '140px', overflowY: 'scroll', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '10px', padding: '10px',}}>
-                                                  <div style={{cursor:'pointer'}}>
-                                                    {
-                                                      isosDelÁreaSeleccionadaEnLaLista.length == 0
-                                                      
-                                                      ? 
-
-                                                      áreasList[áreasList.length-1].isos.map((iso, index) =>   
-                                                        <p key={index} style={{margin:'4px 0px 4px 4px'}}>{iso}</p>
-                                                      )
-
-                                                      :
-
-                                                      isosDelÁreaSeleccionadaEnLaLista.map((iso, index) =>   
-                                                        <p key={index} style={{margin:'4px 0px 4px 4px'}}>{iso}</p>
-                                                      )
-                                                    }
-
-                                                </div>
-                                              </div>
-                                  </div>
-                        </div>
-                      }
+                                              </td>
+                                            </tr>
+                                          );
+                                        })
+                                }
+                                </tbody>
+                        </table>
+                </div>
         </form>
       
   );

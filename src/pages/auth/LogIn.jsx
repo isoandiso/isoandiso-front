@@ -3,23 +3,37 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import useUser from "../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 function LogIn() {
     const navigate = useNavigate();
     const { login } = useUser()
     const { register, handleSubmit, formState: { errors }, } = useForm();
 
-    const [error, setError] = useState('')
+    const [error, setErrores] = useState('')
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (user) => {
+        const incioDeSesionExitoso = await login(
+            {
+                email: user.email,
+                password: user.password,
+            },
+            setErrores
+        );
 
-        const response = await login(data, setError)
-        setTimeout(() => {
-            setError('')
-        }, 3000)
-        if (response) {
-            navigate('/')
+        if (incioDeSesionExitoso) {
+            await Swal.fire({
+                icon: 'success',
+                text: "Inicio de sesión exitoso",
+            });
+            navigate('/usuario/acquisitions');  // Redirige después de un registro exitoso
+        } else {
+            await Swal.fire({
+                icon: 'error',
+                text: "Error en el incio de sesión. Verifique los datos ingresados.",
+            });
         }
+
     };
 
     return (
@@ -102,17 +116,12 @@ function LogIn() {
                             )}
                         </div>
                         <div>
-                            <Link
-                                to="/acquisitions"
-                                className="font-semibold leading-6 text-green-500 hover:text-sky-800"
+                            <button
+                                type="submit"
+                                className="w-full justify-center bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded"
                             >
-                                    <button
-                                    type="submit"
-                                    className="w-full justify-center bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded"
-                                >
-                                    Ingresar
-                                </button>
-                            </Link>
+                                Ingresar
+                            </button>
                         </div>
                     </form>
                     <p className="mt-10 text-center text-sm text-black">

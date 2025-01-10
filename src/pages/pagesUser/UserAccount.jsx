@@ -5,7 +5,6 @@ import { SlSettings } from "react-icons/sl"
 import { Dropdown, Button } from '@rewind-ui/core'
 import UpdateUser from '../../components/userAccount/UpdateUser'
 import ChangePassword from '../../components/userAccount/ChangePassword'
-import useSWR from 'swr'
 import api from '../../settings/api'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
@@ -13,28 +12,8 @@ import PropertiesUser from '../../components/userAccount/PropertiesUser'
 
 export const UserAccount = () => {
     const navigate = useNavigate()
-    const { logout } = useUser()
+    const { logout, user } = useUser()
     const [currentView, setCurrentView] = useState('none');
-
-    const getUser = async () => {
-        const token = localStorage.getItem('AUTH_TOKEN_PROPIA');
-
-        try {
-            const response = await api.get('/auth/profile/', {
-                headers: {
-                    Authorization: `Token ${token}`
-                }
-            });
-            return response.data
-        } catch (error) {
-            console.error('Error fetching user:', error.message);
-        }
-    };
-
-    const { data: user, IsLoading, mutate } = useSWR(
-        `${import.meta.env.VITE_API_URL}/auth/profile/`,
-        getUser
-    )
 
     const handleDelete = async (id) => {
         Swal.fire({
@@ -47,22 +26,22 @@ export const UserAccount = () => {
             confirmButtonText: "Sí, eliminar",
             cancelButtonText: "Cancelar"
         }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    await logout()
-                    const response = await api.delete(`/auth/${id}/`);
-                    if (response.status == 204) {
-                        navigate('/')
-                    }
+            // if (result.isConfirmed) {
+            //     try {
+            //         await logout()
+            //         const response = await api.delete(`/auth/${id}/`);
+            //         if (response.status == 204) {
+            //             navigate('/')
+            //         }
 
-                } catch (error) {
-                    Swal.fire({
-                        title: "Error",
-                        text: 'Hubo un problema al intentar eliminar el usuario.',
-                        icon: 'error',
-                    });
-                }
-            }
+            //     } catch (error) {
+            //         Swal.fire({
+            //             title: "Error",
+            //             text: 'Hubo un problema al intentar eliminar el usuario.',
+            //             icon: 'error',
+            //         });
+            //     }
+            // }
         });
     };
 
@@ -120,7 +99,7 @@ export const UserAccount = () => {
                     )}
                 </div>
                 <div>
-                    <PropertiesUser userId={user?.id} />
+                    <PropertiesUser userId={user._id} />
                 </div>
             </div>
         </div>

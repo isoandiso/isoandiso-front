@@ -17,25 +17,25 @@ const PropertiesUser = ({ userId }) => {
     // const [page, setPage] = useState(1);
     // const [pageSize, setPageSize] = useState(2);
 
-    const getProperties = async () => {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        try {
-            const response = await api.get(`/property/list/user/${userId}/`, {
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            return response.data;
+    // const getProperties = async () => {
+    //     await new Promise(resolve => setTimeout(resolve, 1000));
+    //     try {
+    //         const response = await api.get(`/property/list/user/${userId}/`, {
+    //             headers: {
+    //                 'Accept': 'application/json'
+    //             }
+    //         });
+    //         return response.data;
 
-        } catch (error) {
-            console.error(error);
-            return []; // Devuelve un array vacío en caso de error
-        }
-    }
+    //     } catch (error) {
+    //         console.error(error);
+    //         return []; // Devuelve un array vacío en caso de error
+    //     }
+    // }
 
     const { data: properties, isLoading, mutate } = useSWR(
-        `${import.meta.env.VITE_API_URL}/property/list/user/${userId}/`,
-        () => getProperties()
+        //`${import.meta.env.VITE_API_URL}/property/list/user/${userId}/`,
+        //() => getProperties()
     );
 
     // const totalPages = Math.ceil(data?.count / pageSize)
@@ -113,9 +113,9 @@ const PropertiesUser = ({ userId }) => {
 
     return (
         <div className='my-4 space-y-5'>
-            {properties.map((propertie) => (
+            {/* {properties.map((propertie) => (
                 <Propertie propertie={propertie} key={propertie.id} userPost={1} />
-            ))}
+            ))} */}
         </div>
     );
 }

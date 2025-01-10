@@ -17,7 +17,7 @@ const ChangePassword = ({ setShowChangePassword }) => {
             const response = await api.patch(`/auth/changePass/${user.id}/`, {
                 password: data.new_password
             });
-            Swal.fire('Éxito', 'Contraseña cambiada con éxito', 'success');
+            await Swal.fire('Éxito', 'Contraseña cambiada con éxito', 'success');
             setShowChangePassword('none'); // Actualizar estado para cerrar el formulario
         } catch (error) {
             console.error(error);

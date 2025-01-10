@@ -12,7 +12,8 @@ import { MdLogin } from "react-icons/md"
 import { BiSolidChat } from "react-icons/bi"
 import { FaRegUser } from "react-icons/fa"
 import ChatBot from '../compGeneral/ChatBot'
-
+import { Dropdown, Button } from '@rewind-ui/core'
+import useUser from '../../hooks/useUser';
 
 const links = [
     {
@@ -34,6 +35,11 @@ const links = [
         text: "ANUNCIOS",
         id: 4,
     },
+    {
+        link: "acquisitions",
+        text: "ADQUISICIONES",
+        id: 5,
+    },
 
     // {
     //     link: "/actividad",
@@ -48,6 +54,8 @@ const links = [
 ];
 
 const LayoutUser = () => {
+
+    const { logout } = useUser()
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLgScreen, setIsLgScreen] = useState(window.innerWidth >= 1024);
 
@@ -74,12 +82,16 @@ const LayoutUser = () => {
         setChatBot(!chatBot);
     };
 
+    const signOff = async () => {
+        await logout()
+    }
+
     return (
         <div>
             <div className="flex justify-between items-center px-5 md:px-8">
                 <div className="flex items-center font-ubuntu  pl-8">
                     <Link to={"/"} className="text-white  flex justify-start items-center font-semibold text-xl h-24">
-                        <img src="/public/img/logo.png" alt="" width="170" height="100" />
+                        <img src="/img/logoss.png" alt="" width="70" height="20" />
                     </Link>
                     <div
                         className={`absolute ${isMenuOpen ? 'flex' : 'hidden'} h-screen z-30 bg-black bg-opacity-75 top-0 bottom-0 left-0 flex lg:flex right-0 justify-center items-center gap-5  font-bold p-3 lg:p-0 lg:static lg:bg-transparent lg:h-auto`}
@@ -116,12 +128,29 @@ const LayoutUser = () => {
                             <p className="pl-1 text-sm">Publicar</p>
                         </button>
                     </a> */}
-                    <a href="cuenta">
-                        <button className="bg-green-500 hover:bg-gray-500 m-2 p-2 items-center flex text-white rounded-sm justify-center z-60">
-                            <FaRegUser className="text-2xl" />
-                            <p className="pl-1 text-sm font-urbanist">Usuario</p>
-                        </button>
-                    </a>
+
+                    <Dropdown itemColor="green" radius="none">
+                            <Dropdown.Trigger itemColor="blue">
+                                <Button color='green' radius="none" className='m-2 p-2 h-[42px] w-[90.27px] font-urbanist text-[17px]'>
+                                    Usuario
+                                </Button>
+
+                            </Dropdown.Trigger>
+                            <Dropdown.Content className='font-urbanist'>
+                                <Dropdown.Item>
+                                    <Link to="/usuario/cuenta">
+                                        Mi perfil
+                                    </Link>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    Messages
+                                </Dropdown.Item>
+                                <Dropdown.Divider />
+                                <Dropdown.Item onClick={signOff}>
+                                    Cerrar sesión
+                                </Dropdown.Item>
+                            </Dropdown.Content>
+                        </Dropdown>
                 </div>
             </div>
 
@@ -158,7 +187,6 @@ const LayoutUser = () => {
                             <p className='text-gray-700 font-ubuntu  font-bold text-base'>Accesos directos</p>
                             <nav>
                                 <p className='p-2 hover:text-green-500'>Inicio</p>
-                                <p className='p-2 hover:text-green-500'>Buscar propiedades</p>
                                 <p className='p-2 hover:text-green-500'>Asesores</p>
                                 <p className='p-2 hover:text-green-500'>Contactos</p>
                                 <p className='p-2 hover:text-green-500'>Nosotros</p>
