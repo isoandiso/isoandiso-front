@@ -14,6 +14,7 @@ import { FaPlus } from "react-icons/fa6";
 import { SiWechat } from "react-icons/si";
 import ChatBot from '../compGeneral/ChatBot';
 import Loading from '../compGeneral/Loading';
+import { useNavigate } from "react-router-dom";
 
 const links = [
     {
@@ -44,6 +45,7 @@ const links = [
 ];
 
 const LayoutAdmin = () => {
+    const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLgScreen, setIsLgScreen] = useState(window.innerWidth >= 1024);
     const [isLoading, setIsLoading] = useState(true);
@@ -104,7 +106,7 @@ const LayoutAdmin = () => {
                         <div className="flex justify-between items-center px-5 md:px-8">
                             <div className="flex items-center pl-8">
                                 <Link to={"/"} className="text-white flex justify-start items-center font-semibold text-xl h-24 pr-4">
-                                    <img src="/public/img/logo.png" alt="" width="170" height="120" />
+                                    <img src="/img/logoss.png" alt="" width="70" height="20" />
                                 </Link>
                                 <div
                                     className={`absolute ${isMenuOpen ? 'flex' : 'hidden'} h-screen z-30 bg-black bg-opacity-75 top-0 bottom-0 left-0 flex lg:flex right-0 justify-center items-center gap-5  font-bold p-3 lg:p-0 lg:static lg:bg-transparent lg:h-auto`}
@@ -136,16 +138,19 @@ const LayoutAdmin = () => {
                                 </button>
                             </div>
                             <div className='flex flex-col md:flex-row'>
-                                <a href="/publicar/formulario">
-                                    <button className="bg-white hover:bg-green-500 hover:text-white m-2 p-2 items-center flex text-gray-700 border border-green-500 justify-center z-60">
+                                <div>
+                                    <button className="bg-white hover:bg-green-500 hover:text-white m-2 p-2 items-center flex text-gray-700 border border-green-500 justify-center z-60"
+                                        onClick={() => (navigate("/publicar/formulario"))}
+                                    >
                                         <FaPlus />
                                         <p className="pl-1 text-sm font-urbanist">Publicar</p>
                                     </button>
-                                </a>
-                                <a href="/login">
+                                </div>
+                                <div>
                                     <button className="bg-green-500 hover:bg-gray-400 m-2 p-2 items-center flex text-white justify-center z-60"
                                         onMouseEnter={handleMouseEnter}
                                         onMouseLeave={handleMouseLeave}
+                                        onClick={() => (navigate("/login"))}
                                     >
                                         <MdLogin className="text-2xl" />
                                         <p className="pl-1 text-sm font-urbanist">Iniciar sesión</p>
@@ -164,17 +169,17 @@ const LayoutAdmin = () => {
                                                 >
                                                     Iniciar sesión
                                                 </a>
-                                                <a
+                                                {/* <a
                                                     href="#registrarse"
                                                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                                                     role="menuitem"
                                                 >
                                                     Registrarse
-                                                </a>
+                                                </a> */}
                                             </div>
                                         </div>
                                     )}
-                                </a>
+                                </div>
                             </div>
                         </div>
 
@@ -211,7 +216,6 @@ const LayoutAdmin = () => {
                                         <p className='text-gray-700 font-ubuntu  font-bold text-base'>Accesos directos</p>
                                         <nav>
                                             <p className='p-2 hover:text-green-500'>Inicio</p>
-                                            <p className='p-2 hover:text-green-500'>Buscar propiedades</p>
                                             <p className='p-2 hover:text-green-500'>Asesores</p>
                                             <p className='p-2 hover:text-green-500'>Contactos</p>
                                             <p className='p-2 hover:text-green-500'>Nosotros</p>

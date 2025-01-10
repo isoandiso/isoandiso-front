@@ -24,6 +24,7 @@ import Users from './pages/pagesAdmin/Users'
 import LayoutAI from './components/layouts/LayoutAI'
 import HomeAI from './pages/pagesAI/HomeAI'
 import SignIn from './pages/auth/SignIn'
+import Acquisitions from './pages/acquisitions/Acquisitions'
 import IA from './pages/pagesWeb/IA'
 
 // contexts
@@ -130,11 +131,16 @@ const router = createBrowserRouter(
           path: 'actividad'
         },
         {
+          element: <Acquisitions />,
+          path: 'acquisitions'
+        },
+        {
           path: "*",
           element: <Navigate to="/usuario/cuenta" replace />
         }
       ]
     },
+    /*
     {
       path: '/ia',
       element: <LayoutAI />,
@@ -150,7 +156,7 @@ const router = createBrowserRouter(
         // },
       ]
     },
-
+    */
   ]
 )
 

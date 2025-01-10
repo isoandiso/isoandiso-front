@@ -1,114 +1,88 @@
 import React, { createContext, useEffect, useState } from "react";
-import { json, useNavigate } from "react-router-dom";
 import api from "../settings/api";
-import useSWR from "swr";
-import Swal from "sweetalert2";
 
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
+  
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState({});
+  const [isAuth, setIsAuth] = useState(false);
 
-
-    const [user, setUser] = useState({});
-    const [isAuth, setIsAuth] = useState(
-        localStorage.getItem('AUTH_TOKEN_PROPIA') ? true : false
-    );
-
-    // funciones de authenticación
-    const register = async (data, setErrores) => {
-        try {
-            const response = await api.post('/auth/register/', data);
-            const { data: user } = response
-            if (user && user.token) {
-                localStorage.setItem('AUTH_TOKEN_PROPIA', user.token);
-                setUser(user);
-                setIsAuth(true);
-                return true;
-            }
-        } catch (error) {
-            if (error.response) {
-                setErrores(Object.values(error.response.data))
-            }
-
-            return false
-        };
+  const register = async (data, setErrores) => {
+    try {
+      const response = await api.post('/company/register', data);
+      setUser(response.data);
+      setIsAuth(true);
+      return true;
+    } catch (error) {
+      if (error.response) {
+        setErrores(Object.values(error.response.data));
+      }
+      return false;
     }
-    const login = async (data, setError) => {
-        try {
-            const response = await api.post('/auth/login/', data)
-            const { data: user } = response
+  };
 
-            if (user && user.token) {
-                localStorage.setItem('AUTH_TOKEN_PROPIA', user.token);
-                setUser(user);
-                setIsAuth(true);
-                return true;
-            }
-        } catch (error) {
-            if (error.response) {
-                setError(error.response.data.error)
-
-            }
-        }
+  const login = async (data, setError) => {
+    try {
+      const response = await api.post('/company/login', data);
+      setUser(response.data);
+      setIsAuth(true);
+      return true;
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.error);
+      }
     }
+  };
 
-    const logout = async () => {
-        const token = localStorage.getItem('AUTH_TOKEN_PROPIA');
-        try {
-            const response = await api.post('/auth/logout/', {}, {
-                headers: {
-                    Authorization: `Token ${token}`
-                }
-            });
-
-            if (response.status == 200) {
-                localStorage.removeItem("AUTH_TOKEN_PROPIA");
-                setIsAuth(false)
-
-            }
-        } catch (error) {
-            console.error(error)
-        };
+  const logout = async () => {
+    try {
+      await api.post('/company/logout');
+      setUser({});
+      setIsAuth(false);
+      window.location.href = "/";
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    // funcion para obtener al usurio authenticado
-    const getUser = async () => {
-        const token = localStorage.getItem('AUTH_TOKEN_PROPIA');
-        try {
-            const response = await api.get('/auth/profile/', {
-                headers: {
-                    Authorization: `Token ${token}`
-                }
-            });
+  /*este "getuser" es más que nada para que cuando el usuario recargue la página vuelva a agarrar los datos del usuario
+   y lo ponga en la variable de estado user si es que no se deslogueo todavía, ya que al recargar la página se pierden 
+   los datos entonces este getUser los agarra de nuevo para los demás componentes que usan el "user"*/
+  const getUser = async () => {
+    try {
+      const response = await api.get('/company/profile');
+      if (response.status === 200) {
+        setUser(response.data);
+        setIsAuth(true);
+      }
+    } catch (error) {
+      console.error('Error fetching user:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-            if (response.status === 200) {
-                const data = response.data;
-                setUser(data);
-            } else {
-                console.error(`Error al obtener el usuario: ${response.status} - ${response.statusText}`);
-            }
-        } catch (error) {
-            console.error('Error fetching user:', error.message);
-        }
-    };
+  useEffect(() => {
+    getUser();
+  }, []);
 
-    useEffect(() => {
-        getUser()
-    }, [])
-
-    return (
-        <UserContext.Provider
-            value={{
-                register,
-                isAuth,
-                logout,
-                login,
-                user
-            }}
-        >
-            {children}
-        </UserContext.Provider>
-    );
+  return (
+    <UserContext.Provider
+      value={{
+        isLoading,
+        register,
+        isAuth,
+        logout,
+        login,
+        user,
+        getUser,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export { UserContext, UserProvider };

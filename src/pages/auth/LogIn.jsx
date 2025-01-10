@@ -2,40 +2,52 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import useUser from "../../hooks/useUser";
-import dep2 from "/public/img/dep2.jpeg";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 function LogIn() {
     const navigate = useNavigate();
     const { login } = useUser()
     const { register, handleSubmit, formState: { errors }, } = useForm();
 
-    const [error, setError] = useState('')
+    const [error, setErrores] = useState('')
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (user) => {
+        const incioDeSesionExitoso = await login(
+            {
+                email: user.email,
+                password: user.password,
+            },
+            setErrores
+        );
 
-        const response = await login(data, setError)
-        setTimeout(() => {
-            setError('')
-        }, 3000)
-        if (response) {
-            navigate('/')
+        if (incioDeSesionExitoso) {
+            await Swal.fire({
+                icon: 'success',
+                text: "Inicio de sesión exitoso",
+            });
+            navigate('/usuario/acquisitions');  // Redirige después de un registro exitoso
+        } else {
+            await Swal.fire({
+                icon: 'error',
+                text: "Error en el incio de sesión. Verifique los datos ingresados.",
+            });
         }
+
     };
 
     return (
         <div
             className="min-h-full flex justify-center items-center mx-auto md:px-6 py-5 md:py-12 lg:px-8"
-            style={{ backgroundImage: "url('/public/img/dep2.jpeg')" }}
         >
             <div className="bg-white bg-opacity-100 ml-4 mr-4 mb-10 p-6 w-full rounded max-w-3xl font-urbanist flex flex-row justify-center space-x-8">
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                        <img
+                        {/*<img
                             className="mx-auto h-10 w-auto"
-                            src="/public/img/logo.png"
+                            src=""
                             alt="my Company"
-                        />
+                        />*/}
                         <h2 className="mt-10 mb-5 text-center text-2xl font-bold leading-9  text-black font-ubuntu ">
                             Iniciar sesión
                         </h2>
@@ -121,9 +133,6 @@ function LogIn() {
                             Registrarse
                         </Link>
                     </p>
-                </div>
-                <div className="hidden lg:block w-160 ">
-                    <img src={dep2} alt="" className="rounded w-100 h-100 object-cover" />
                 </div>
             </div>
 
