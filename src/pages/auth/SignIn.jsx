@@ -58,7 +58,7 @@ function SignIn() {
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                         {/* <img
                             className="mx-auto h-10 w-auto"
-                            src="/public/img/logo.png"
+                            src="/img/logo.png"
                             alt="my Company"
                         /> */}
                         <h2 className="mt-6 mb-5 text-center text-2xl font-bold leading-9  text-black font-ubuntu ">

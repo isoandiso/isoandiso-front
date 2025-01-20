@@ -10,7 +10,7 @@ function ItemSellOk() {
             id: 1,
             locate: 'Lima, Lima, Miraflores',
             href: '/item',
-            imageSrc: '/public/img/dep9.jpeg',
+            imageSrc: '/img/dep9.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             price: 'S/. 360,000.00 ',
             ruc: 'Culminado',

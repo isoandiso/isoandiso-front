@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { TbDeviceIpadSearch } from "react-icons/tb"
 import { SlRocket } from "react-icons/sl"
 import { FaHouseUser } from "react-icons/fa"
-import isoImage from '/public/img/iso.webp';
+import isoImage from '/img/iso.webp';
 import { GiBullseye } from "react-icons/gi";
 
 const Us = () => {
@@ -11,7 +11,7 @@ const Us = () => {
         {
             id: 1,
             href: '/item',
-            imageSrc: '/public/img/daniel.jpeg',
+            imageSrc: '/img/daniel.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'líder UX/UI',
             name: 'Daniel Mena ',
@@ -20,7 +20,7 @@ const Us = () => {
         {
             id: 2,
             href: '/item',
-            imageSrc: '/public/img/back.jpeg',
+            imageSrc: '/img/back.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Líder Desarrollador Backend',
             name: 'Jackson Quintero',

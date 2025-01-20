@@ -128,7 +128,7 @@ const ChatBot = () => {
         <div className="flex flex-col h-100 lg:w-120 sm:w-auto font-urbanist">
             <div className='bg-gray-400 flex p-2'>
                 <div className='rounded-full px-2 py-[10px] bg-white flex items-center'>
-                    {/* <img src="/public/img/logo.png" alt="" className='w-10' /> */}
+                    {/* <img src="/img/logo.png" alt="" className='w-10' /> */}
                 </div>
                 <h3 className='p-4 text-white font-urbanist'>ChatWeb</h3>
             </div>

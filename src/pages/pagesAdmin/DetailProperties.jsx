@@ -71,25 +71,25 @@ export const DetailProperties = () => {
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 h-full">
                         <div class="col-span-2 sm:col-span-1 md:col-span-2 bg-gray-50 h-auto md:h-full flex flex-col">
                             <div class="group relative flex flex-col overflow-hidden  px-4 pb-4 pt-40 flex-grow">
-                                <img src="/public/img/edf1.jpeg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
+                                <img src="/img/edf1.jpeg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
                                 <div class="absolute inset-0 bg-gradient-to-b from-gray-900/25 to-gray-900/5"></div>
                                 <h3 class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl">Edificio</h3>
                             </div>
                         </div>
                         <div class="col-span-2 sm:col-span-1 md:col-span-2 bg-stone-50">
                             <div class="group relative flex flex-col overflow-hidden px-4 pb-4 pt-40 mb-4">
-                                <img src="/public/img/dep1.jpeg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
+                                <img src="/img/dep1.jpeg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
                                 <div class="absolute inset-0 bg-gradient-to-b from-gray-900/25 to-gray-900/5"></div>
                                 <h3 class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl">Sala de juego</h3>
                             </div>
                             <div class="grid gap-4 grid-cols-2 sm:grid-cols-2 lg:grid-cols-2">
                                 <div class="group relative flex flex-col overflow-hidden px-4 pb-4 pt-40">
-                                    <img src="/public/img/dep3.jpeg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
+                                    <img src="/img/dep3.jpeg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
                                     <div class="absolute inset-0 bg-gradient-to-b from-gray-900/25 to-gray-900/5"></div>
                                     <h3 class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl">Dormitorio</h3>
                                 </div>
                                 <div class="group relative flex flex-col overflow-hidden px-4 pb-4 pt-40">
-                                    <img src="/public/img/dep6.webp" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
+                                    <img src="/img/dep6.webp" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
                                     <div class="absolute inset-0 bg-gradient-to-b from-gray-900/25 to-gray-900/5"></div>
                                     <h3 class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl">Sala</h3>
                                 </div>
@@ -97,7 +97,7 @@ export const DetailProperties = () => {
                         </div>
                         <div class="col-span-2 sm:col-span-1 md:col-span-1 bg-sky-50 h-auto md:h-full flex flex-col">
                             <button type='button' class="group relative flex flex-col overflow-hidden px-4 pb-4 pt-40 flex-grow">
-                                <img src="/public/img/dep8.jpeg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
+                                <img src="/img/dep8.jpeg" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
                                 <div class="absolute inset-0 bg-gradient-to-b from-gray-900/25 to-gray-900/5"></div>
                                 <h3 class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl">Salón</h3>
                             </button>

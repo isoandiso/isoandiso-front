@@ -7,7 +7,7 @@ function Flyer2() {
             title: 'Sistemas de Gestiones',
             descript: '¿Deseas tener una gestión eficiente?',
             button: 'ISO',
-            imageSrc: '/public/img/1.webp',
+            imageSrc: '/img/1.webp',
             imageAlt: '',
         },
         {
@@ -15,7 +15,7 @@ function Flyer2() {
             title: 'Realidad virtual',
             descript: '¿Cómo usar la Realidad virtual en tu rubro?',
             button: 'Con IA',
-            imageSrc: '/public/img/6.jpeg',
+            imageSrc: '/img/6.jpeg',
             imageAlt: '',
         },
     ]
