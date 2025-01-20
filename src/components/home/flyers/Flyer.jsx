@@ -15,7 +15,7 @@ function Flyer() {
             title: 'ISO 45001:2018.',
             descript: 'Sistema de Gestión basada en la norma ',
             button: 'Conocer más',
-            imageSrc: '/img/dep4.jpeg',
+            imageSrc: '/img/dep2.jpeg',
             imageAlt: '',
         },
         {
@@ -23,7 +23,7 @@ function Flyer() {
             title: 'ISO 37001:2016.',
             descript: 'Sistema de Gestión basada en la norma ',
             button: 'Conocer más',
-            imageSrc: '/img/dep6.jpeg',
+            imageSrc: '',
             imageAlt: '',
         },
     ]
