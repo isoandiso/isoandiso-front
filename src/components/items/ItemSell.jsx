@@ -11,7 +11,7 @@ function ItemSell() {
         {
             id: 1,
             href: '/item',
-            imageSrc: '/public/img/1.webp',
+            imageSrc: '/img/1.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: 'ISO 9001:2015.',
@@ -20,7 +20,7 @@ function ItemSell() {
         {
             id: 2,
             href: '/item',
-            imageSrc: '/public/img/2.jpeg',
+            imageSrc: '/img/2.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '45001 - 2018',
@@ -38,7 +38,7 @@ function ItemSell() {
         {
             id: 4,
             href: '/item',
-            imageSrc: '/public/img/4.webp',
+            imageSrc: '/img/4.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '27001 - 2022',
@@ -47,7 +47,7 @@ function ItemSell() {
         {
             id: 5,
             href: '/item',
-            imageSrc: '/public/img/5.webp',
+            imageSrc: '/img/5.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '19601 - 2017',
@@ -56,7 +56,7 @@ function ItemSell() {
         {
             id: 6,
             href: '/item',
-            imageSrc: '/public/img/6.jpeg',
+            imageSrc: '/img/6.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '20121 - 2024',
@@ -65,7 +65,7 @@ function ItemSell() {
         {
             id: 7,
             href: '/item',
-            imageSrc: '/public/img/7.webp',
+            imageSrc: '/img/7.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '30301 - 2019',
@@ -74,7 +74,7 @@ function ItemSell() {
         {
             id: 8,
             href: '/item',
-            imageSrc: '/public/img/8.jpeg',
+            imageSrc: '/img/8.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '39001 - 2018',
@@ -83,7 +83,7 @@ function ItemSell() {
         {
             id: 9,
             href: '/item',
-            imageSrc: '/public/img/9.webp',
+            imageSrc: '/img/9.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '13485 - 2018',
@@ -92,7 +92,7 @@ function ItemSell() {
         {
             id: 10,
             href: '/item',
-            imageSrc: '/public/img/10.webp',
+            imageSrc: '/img/10.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '22001 - 2018',
@@ -101,7 +101,7 @@ function ItemSell() {
         {
             id: 11,
             href: '/item',
-            imageSrc: '/public/img/11.jpeg',
+            imageSrc: '/img/11.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '50001 - 2018',
@@ -110,7 +110,7 @@ function ItemSell() {
         {
             id: 12,
             href: '/item',
-            imageSrc: '/public/img/12.webp',
+            imageSrc: '/img/12.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '21001 - 2018',
@@ -119,7 +119,7 @@ function ItemSell() {
         {
             id: 13,
             href: '/item',
-            imageSrc: '/public/img/13.jpeg',
+            imageSrc: '/img/13.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '28001 - 2018',
@@ -128,7 +128,7 @@ function ItemSell() {
         {
             id: 14,
             href: '/item',
-            imageSrc: '/public/img/14.webp',
+            imageSrc: '/img/14.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '37001 - 2018',
@@ -137,7 +137,7 @@ function ItemSell() {
         {
             id: 15,
             href: '/item',
-            imageSrc: '/public/img/15.jpeg',
+            imageSrc: '/img/15.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '17020 - 2018 EMA',
@@ -146,7 +146,7 @@ function ItemSell() {
         {
             id: 16,
             href: '/item',
-            imageSrc: '/public/img/16.webp',
+            imageSrc: '/img/16.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '29001 - 2020',
@@ -155,7 +155,7 @@ function ItemSell() {
         {
             id: 17,
             href: '/item',
-            imageSrc: '/public/img/17.webp',
+            imageSrc: '/img/17.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '26001 - 2019',
@@ -164,7 +164,7 @@ function ItemSell() {
         {
             id: 18,
             href: '/item',
-            imageSrc: '/public/img/18.webp',
+            imageSrc: '/img/18.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '15189 - 2023',
@@ -173,7 +173,7 @@ function ItemSell() {
         {
             id: 19,
             href: '/item',
-            imageSrc: '/public/img/19.webp',
+            imageSrc: '/img/19.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '27701 - 2019',
@@ -182,7 +182,7 @@ function ItemSell() {
         {
             id: 20,
             href: '/item',
-            imageSrc: '/public/img/20.jpeg',
+            imageSrc: '/img/20.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '16949 - 2016',
@@ -191,7 +191,7 @@ function ItemSell() {
         {
             id: 21,
             href: '/item',
-            imageSrc: '/public/img/21.webp',
+            imageSrc: '/img/21.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '17025 - 2017',
@@ -200,7 +200,7 @@ function ItemSell() {
         {
             id: 22,
             href: '/item',
-            imageSrc: '/public/img/22.webp',
+            imageSrc: '/img/22.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '22716 - 2008',
@@ -209,7 +209,7 @@ function ItemSell() {
         {
             id: 23,
             href: '/item',
-            imageSrc: '/public/img/23.jpeg',
+            imageSrc: '/img/23.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '22301 - 2019',
@@ -218,7 +218,7 @@ function ItemSell() {
         {
             id: 24,
             href: '/item',
-            imageSrc: '/public/img/24.jpeg',
+            imageSrc: '/img/24.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '24001 - 2015',
@@ -227,7 +227,7 @@ function ItemSell() {
         {
             id: 25,
             href: '/item',
-            imageSrc: '/public/img/25.webp',
+            imageSrc: '/img/25.webp',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '17021 - 2015',

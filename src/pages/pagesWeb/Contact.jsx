@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import api from '../../settings/api'
 import Swal from 'sweetalert2';
-import building from "/public/img/building.jpg";
+import building from "/img/building.jpg";
 
 function Contact() {
 
