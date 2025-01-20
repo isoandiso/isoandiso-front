@@ -34,7 +34,7 @@ const PropertiesUser = ({ userId }) => {
     // }
 
     const { data: properties, isLoading, mutate } = useSWR(
-        //`${import.meta.env.API_URL}/property/list/user/${userId}/`,
+        //`${import.meta.env.VITE_API_URL}/property/list/user/${userId}/`,
         //() => getProperties()
     );
 
