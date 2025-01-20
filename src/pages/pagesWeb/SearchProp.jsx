@@ -40,7 +40,7 @@ const SearchProp = () => {
     }
 
     const { data, isLoading, mutate } = useSWR(
-        queryParams.type !== undefined ? `${import.meta.env.API_URL}/property/list/?type=${queryParams.type}&text=${queryParams.text}&transaction=${queryParams.transaction}&page=${page}&page_size=${pageSize}` : null,
+        queryParams.type !== undefined ? `${import.meta.env.VITE_API_URL}/property/list/?type=${queryParams.type}&text=${queryParams.text}&transaction=${queryParams.transaction}&page=${page}&page_size=${pageSize}` : null,
         () => getProperties(queryParams.type, queryParams.text, queryParams.transaction, page, pageSize)
     );
 
