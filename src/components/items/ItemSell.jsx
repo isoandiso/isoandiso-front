@@ -29,7 +29,7 @@ function ItemSell() {
         {
             id: 3,
             href: '/item',
-            imageSrc: '/public/img/3.jpeg',
+            imageSrc: '/img/3.jpeg',
             imageAlt: "Front of men's Basic Tee in black.",
             title: 'Sistema de Gestión basada en la norma ',
             iso: '14001 - 2018',
