@@ -15,12 +15,6 @@ import Post from './pages/pagesUser/Post'
 import UserActivity from './pages/pagesUser/UserActivity'
 import { UserAccount } from './pages/pagesUser/UserAccount'
 
-import LayoutAdmin from './components/layouts/LayoutAdmin'
-import Properties from './pages/pagesAdmin/Properties'
-import { DetailProperties } from './pages/pagesAdmin/DetailProperties'
-import ListMessages from './pages/pagesAdmin/ListMessages'
-import Users from './pages/pagesAdmin/Users'
-
 import LayoutAI from './components/layouts/LayoutAI'
 import HomeAI from './pages/pagesAI/HomeAI'
 import SignIn from './pages/auth/SignIn'
@@ -30,9 +24,7 @@ import IA from './pages/pagesWeb/IA'
 // contexts
 import { UserProvider } from './context/UserProvider'
 //loaders
-import { loader as loaderProperty } from './pages/pagesAdmin/DetailProperties'
 import { loader as loaderProperty2 } from './components/properties/DetailProps'
-import { Dashboard } from './pages/pagesAdmin/Dashboard'
 
 // layout de rutas protejidas
 import ProtectedRoutes from './components/protected/ProtectedRoutes'
@@ -79,38 +71,6 @@ const router = createBrowserRouter(
           element: <SignIn />,
           path: '/signin'
         },
-      ]
-    },
-    {
-      path: '/admin',
-      element: <ProtectedRoutes role={1}><LayoutAdmin /></ProtectedRoutes>,
-      children: [
-        {
-          index: true,
-          element: <Dashboard />,
-          path: 'dashboard'
-        },
-        {
-          element: <Properties />,
-          path: 'propiedades'
-        },
-        {
-          element: <DetailProperties />,
-          path: 'propiedades/detail/:idProperty',
-          loader: loaderProperty
-        },
-        {
-          element: <Users />,
-          path: 'usuarios'
-        },
-        {
-          element: <ListMessages />,
-          path: 'mensajes'
-        },
-        {
-          path: "*",
-          element: <Navigate to="dashboard" replace />
-        }
       ]
     },
     {
