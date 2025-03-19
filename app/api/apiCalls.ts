@@ -257,7 +257,8 @@ apiCallsCompany : {
 
   async _createEmployee(employeeData:Employee){
     try {
-        const { data } = await api.post('/company/createEmployee', employeeData);
+        const { _id, ...dataToSend } = employeeData; // quitamos el campo "_id" porque éste se creará automáticamente en la base de datos
+        const { data } = await api.post('/company/createEmployee', dataToSend);
         return data;
       } catch (error) {
           console.error('Error al crear el trabajador:', error);

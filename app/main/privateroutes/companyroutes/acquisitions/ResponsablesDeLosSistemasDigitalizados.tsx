@@ -43,7 +43,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
     facialRecognition: null,
     digitalSignature: null,
     status: "Activo",
-    workSiteId: "",
+    employeeSiteId: "",
     rolId: "",
     sizePants: 26,
     sizePolo: 'XS',
@@ -108,7 +108,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
       facialRecognition: null,
       digitalSignature: null,
       status: "Activo",
-      workSiteId: "",
+      employeeSiteId: "",
       rolId: "",
       sizePants: 26,
       sizePolo: 'XS',
@@ -132,8 +132,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
         })
     }else{
         //creamos el trabajador
-        const { _id, ...employeeDataWithoutId } = employeeData; //(quitamos el campo "_id" para que no intente guardarlo ya que es automático cuando se crea en la tabla)
-        const createdEmployee:Employee = await apiCalls.apiCallsCompany._createEmployee(employeeDataWithoutId);
+        const createdEmployee:Employee = await apiCalls.apiCallsCompany._createEmployee(employeeData);
         if(createdEmployee){
             //agregamos el trabajador al área
             const companyArea:CompanyArea = await apiCalls.apiCallsCompanyArea._updateResponsibleEmployee(createdEmployee.companyAreaId,createdEmployee._id);
@@ -631,7 +630,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
 
                           {/*Sede */}
                           <p>Sede de trabajo <strong style={{color:'red'}}>*</strong></p>
-                          <select required className={Styles.inputDecorated} value={employeeData.workSiteId} onChange={(e) => setEmployeeData({ ...employeeData, workSiteId: e.target.value })}>
+                          <select required className={Styles.inputDecorated} value={employeeData.employeeSiteId} onChange={(e) => setEmployeeData({ ...employeeData, employeeSiteId: e.target.value })}>
                                 <option value="">Seleccione una opción</option>
                                 {
                                   sites.map((site,indexSite) => <option key={indexSite} value={site._id}>{site.name}</option>)

@@ -76,7 +76,7 @@ export interface Employee {
   facialRecognition: string | null;
   digitalSignature: string | null;
   status: "Activo" | "Inactivo";
-  workSiteId: string;
+  employeeSiteId: string;
   rolId: string;
   sizePants: 26 | 28 | 30 | 32 | 34 | 36 | 38 | 40 | 42 | 44;
   sizePolo: 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';
