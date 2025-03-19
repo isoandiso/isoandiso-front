@@ -2,7 +2,7 @@
 export default {
     content: [
         './index.html',
-        './app/**/*.{js,ts,jsx,tsx}',
+        './src/**/*.{js,ts,jsx,tsx}',
         './node_modules/@rewind-ui/core/dist/theme/styles/*.js',
         './node_modules/@rewind-ui/core/dist/theme/styles/Button.styles.js',
         './node_modules/@rewind-ui/core/dist/theme/styles/Text.styles.js'

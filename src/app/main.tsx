@@ -14,7 +14,7 @@ import Blog from './publicroutes/blog/Blog';
 import Contact from './publicroutes/contact/Contact';
 import LogIn from './publicroutes/login/LogIn';
 import SignIn from './publicroutes/signin/SignIn';
-//import DetailProps, { loader as loaderProperty2 } from './layoutmain/detailprops/DetailProps';
+//import DetailProps, { loader as loaderProperty2 } from '';
 
 // RUTAS PRIVADAS
 import PrivateRoutes from './privateroutes/PrivateRoutes';

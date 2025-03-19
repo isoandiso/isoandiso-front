@@ -27,7 +27,7 @@
     }
   },
   "include": [
-    "app/**/*",   // Asegura que todos los archivos dentro de app sean incluidos
+    "src/**/*",   // Asegura que todos los archivos dentro de src sean incluidos
     "vite-env.d.ts", // Incluir el archivo vite-env.d.ts en la raíz
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
