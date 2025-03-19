@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import ItemSell from '../../../generalcomponents/items/ItemSell'
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import PrestenText from './presentext/PrestenText';
-import Flyer2 from '../../../layoutmain/home/flyers/Flyer2';
+import Flyer2 from '../../../publicroutes/home/flyers/Flyer2';
 
 const images = [
     {
@@ -72,7 +72,7 @@ function HomeAI() {
                 </div> */}
                 <video
                     className="absolute top-0 left-0 w-full h-full object-cover"
-                    src='../../../../../public/video/intro.mp4'
+                    src='/video/intro.mp4'
                     autoPlay
                     loop
                     muted

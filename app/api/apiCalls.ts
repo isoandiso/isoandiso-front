@@ -1,6 +1,7 @@
+import { AxiosError } from 'axios';
 import api from "./api";
 import Swal from "sweetalert2";
-import { Iso } from "../models/apiModels"
+import { Employee, Iso } from "../models/apiModels"
 import { DataRegister,DataLogin } from "../models/models";
 
 const apiCalls = {
@@ -17,10 +18,11 @@ apiCallsCompany : {
       return data;
     } catch (error) {
       console.error("Error al intentar registrarse:", error);
+      const axiosError = error as AxiosError;
       await Swal.fire({
         icon: "error",
         title: "Error",
-        text: error.response?.data?.error || `Error al intentar registrarse`,
+        text: axiosError.message || `Error al intentar registrarse`,
         confirmButtonText: "Entendido",
       });
     }
@@ -36,10 +38,11 @@ apiCallsCompany : {
       return data;
     } catch (error) {
       console.error("Error al intentar registrarse:", error);
+      const axiosError = error as AxiosError;
       await Swal.fire({
         icon: 'error',
         title: "Error",
-        text: error.response?.data?.error || "Error en el inicio de sesión. Verifique los datos ingresados.",
+        text: axiosError.message || "Error en el inicio de sesión. Verifique los datos ingresados.",
         confirmButtonText: "Entendido",
       });
     }
@@ -102,7 +105,7 @@ apiCallsCompany : {
     }
   },
 
-  async _updateRuc(companyId:string,ruc) {
+  async _updateRuc(companyId:string,ruc:string) {
     try {
       const { data } = await api.put(`/company/${companyId}/updateRuc`, { ruc: ruc });
       return data;
@@ -117,7 +120,7 @@ apiCallsCompany : {
     }
   },
 
-  async _updateSocialReason(companyId:string,socialReason) {
+  async _updateSocialReason(companyId:string,socialReason:string) {
     try {
       const { data } = await api.put(`/company/${companyId}/updateSocialReason`, { socialReason: socialReason });
       return data;
@@ -132,7 +135,7 @@ apiCallsCompany : {
     }
   },
 
-  async _updateProvince(companyId:string,province) {
+  async _updateProvince(companyId:string,province:string) {
     try {
       const { data } = await api.put(`/company/${companyId}/updateProvince`, { province: province });
       return data;
@@ -147,7 +150,7 @@ apiCallsCompany : {
     }
   },
 
-  async _updateCity(companyId:string,city) {
+  async _updateCity(companyId:string,city:string) {
     try {
       const { data } = await api.put(`/company/${companyId}/updateCity`, { city: city });
       return data;
@@ -162,7 +165,7 @@ apiCallsCompany : {
     }
   },
 
-  async _updateAddress(companyId:string,address) {
+  async _updateAddress(companyId:string,address:string) {
     try {
       const { data } = await api.put(`/company/${companyId}/updateAddress`, { address: address });
       return data;
@@ -177,7 +180,7 @@ apiCallsCompany : {
     }
   },
 
-  async _updateEconomicActivity(companyId:string,economicActivity) {
+  async _updateEconomicActivity(companyId:string,economicActivity:string) {
     try {
       const { data } = await api.put(`/company/${companyId}/updateEconomicActivity`, { economicActivity: economicActivity });
       return data;
@@ -192,7 +195,7 @@ apiCallsCompany : {
     }
   },
 
-  async _updateEconomicSector(companyId:string,economicSector) {
+  async _updateEconomicSector(companyId:string,economicSector:string) {
     try {
       const { data } = await api.put(`/company/${companyId}/updateEconomicSector`, { economicSector: economicSector });
       return data;
@@ -207,7 +210,7 @@ apiCallsCompany : {
     }
   },
 
-  async _updateCompanySize(companyId:string,companySize) {
+  async _updateCompanySize(companyId:string,companySize:string) {
     try {
       const { data } = await api.put(`/company/${companyId}/updateCompanySize`, { companySize: companySize });
       return data;
@@ -222,7 +225,7 @@ apiCallsCompany : {
     }
   },
 
-  async _addSedeIdToCompany(companyId:string,companySiteId) {
+  async _addSedeIdToCompany(companyId:string,companySiteId:string) {
     try {
       const { data } = await api.put(`/company/${companyId}/addSite`, { companySiteId: companySiteId });
       return data;
@@ -237,7 +240,7 @@ apiCallsCompany : {
     }
   },
 
-  async _addAreaIdToCompany(companyId:string,companyAreaId) {
+  async _addAreaIdToCompany(companyId:string,companyAreaId:string) {
     try {
       const { data } = await api.put(`/company/${companyId}/addArea`, { companyAreaId: companyAreaId });
       return data;
@@ -252,7 +255,7 @@ apiCallsCompany : {
     }
   },
 
-  async _createEmployee(employeeData){
+  async _createEmployee(employeeData:Employee){
     try {
         const { data } = await api.post('/company/createEmployee', employeeData);
         return data;
@@ -317,7 +320,7 @@ apiCallsIso : {
     }
   },
 
-  async _getIsoByNameStartWith(isoName) {
+  async _getIsoByNameStartWith(isoName:string) {
     try {
       const { data } = await api.get(`/iso/byNameStartWith`, { params: { isoName } });
       return data;
@@ -376,7 +379,7 @@ apiCallsCompanyAcquisition : {
 },
 
 apiCallsCompanySite : {
-  async _createCompanySite(name,address,city,province) {
+  async _createCompanySite(name:string,address:string,city:string,province:string) {
     const sedeData = {
         name: name,
         address: address,
@@ -419,7 +422,7 @@ apiCallsCompanySite : {
 
 apiCallsCompanyArea : {
 
-  async _createCompanyArea(name,charges){
+  async _createCompanyArea(name:string,charges:string[]){
     const areaData = {
       name: name,
       charges: charges

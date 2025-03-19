@@ -1,35 +1,37 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
-import './style.css';
-
-// Rutas
-import LayoutMain from './layoutmain/LayoutMain';
-import Home from './layoutmain/home/Home';
-import Us from './layoutmain/us/Us';
-import Blog from './layoutmain/blog/Blog';
-import Contact from './layoutmain/contact/Contact';
-//import DetailProps, { loader as loaderProperty2 } from './layoutmain/detailprops/DetailProps';
-import LogIn from './layoutmain/login/LogIn';
-import SignIn from './layoutmain/signin/SignIn';
-import ProtectedRoutes from './protectedroutes/ProtectedRoutes';
-import LayoutCompany from './protectedroutes/layoutcompany/LayoutCompany';
-import { CompanyAccount } from './protectedroutes/layoutcompany/companyaccount/CompanyAccount';
-import Post from './protectedroutes/layoutcompany/post/Post';
-import CompanyActivity from './protectedroutes/layoutcompany/companyactivity/CompanyActivity';
-import Acquisitions from './protectedroutes/layoutcompany/acquisitions/Acquisitions';
-//import SearchProp from './searchprop/SearchProp';
-import LayoutAI from './ia/layoutai/LayoutAI';
-import HomeAI from './ia/layoutai/homeai/HomeAI';
 import apiCalls from '../api/apiCalls';
 import { Company } from '../models/apiModels';
 import { DataLogin,DataRegister } from '../models/models';
+import './style.css';
+
+// RUTAS PÚLICAS
+import PublicRoutes from './publicroutes/PublicRoutes';
+import Home from './publicroutes/home/Home';
+import Us from './publicroutes/us/Us';
+import Blog from './publicroutes/blog/Blog';
+import Contact from './publicroutes/contact/Contact';
+import LogIn from './publicroutes/login/LogIn';
+import SignIn from './publicroutes/signin/SignIn';
+//import DetailProps, { loader as loaderProperty2 } from './layoutmain/detailprops/DetailProps';
+
+// RUTAS PRIVADAS
+import PrivateRoutes from './privateroutes/PrivateRoutes';
+import CompanyRoutes from './privateroutes/companyroutes/CompanyRoutes';
+import { CompanyAccount } from './privateroutes/companyroutes/companyaccount/CompanyAccount';
+import Post from './privateroutes/companyroutes/post/Post';
+import CompanyActivity from './privateroutes/companyroutes/companyactivity/CompanyActivity';
+import Acquisitions from './privateroutes/companyroutes/acquisitions/Acquisitions';
+//import SearchProp from './searchprop/SearchProp';
+import LayoutAI from './ia/layoutai/LayoutAI';
+import HomeAI from './ia/layoutai/homeai/HomeAI';
 
 //CONTEXTO
 
 interface CompanyContextType {
   isLoading: boolean;
-  company: Company | null;
+  company: Company;
   isAuth: boolean;
   register: (dataRegister: DataRegister) => Promise<boolean>;
   login: (dataLogin: DataLogin) => Promise<boolean>;
@@ -45,7 +47,7 @@ interface CompanyProviderProps {
 
 const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [company, setCompany] = useState<Company | null>(null);
+  const [company, setCompany] = useState<Company>({} as Company);
   const [isAuth, setIsAuth] = useState<boolean>(false);
 
   const register = async (dataRegister: DataRegister): Promise<boolean> => {
@@ -70,7 +72,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
 
   const logout = async (): Promise<void> => {
     await apiCalls.apiCallsCompany._logout();
-    setCompany(null);
+    setCompany({} as Company);
     setIsAuth(false);
     window.location.href = "/";
   };
@@ -110,7 +112,7 @@ const useCompany = (): CompanyContextType => {
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <LayoutMain />,
+    element: <PublicRoutes />,
     children: [
       { index: true, element: <Home />, path: '/' },
       { element: <Us />, path: '/nosotros' },
@@ -124,9 +126,9 @@ const router = createBrowserRouter([
   {
     path: '/company',
     element: (
-      <ProtectedRoutes>
-        <LayoutCompany />
-      </ProtectedRoutes>
+      <PrivateRoutes>
+        <CompanyRoutes />
+      </PrivateRoutes>
     ),
     children: [
       { element: <CompanyAccount />, path: 'account', index: true },

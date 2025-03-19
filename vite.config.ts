@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
+import tailwindcss from 'tailwindcss'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,6 +9,11 @@ export default defineConfig({
     react(),
     viteTsconfigPaths(), // Esto permitirá que el proyecto insertado reconozca las rutas del tsconfig
   ],
+  css: {
+    postcss: {
+      plugins: [tailwindcss],
+    },
+  },
   build: {
     chunkSizeWarningLimit: 3000, // Mantén esta configuración si el proyecto lo requiere
   },

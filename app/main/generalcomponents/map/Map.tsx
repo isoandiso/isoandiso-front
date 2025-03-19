@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MapContainer, TileLayer, Polygon, Popup } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 
