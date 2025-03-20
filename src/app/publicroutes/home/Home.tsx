@@ -234,7 +234,7 @@ const Home = () => {
             </div>
             <div>
                 <div className='flex justify-center mt-10'>
-                    <a href="/ia/inicioia">
+                    <a href="/ia">
                         <button className='inset-0 flex justify-center items-center border border-gray-400 p-2 font-urbanist hover:bg-gray-400 hover:text-white'>
                             Nosotros
                         </button>
@@ -280,7 +280,7 @@ const Home = () => {
                                     <div >
                                         <p className="text-sm leading-6 text-gray-700 font-ubuntu ">Navega por nuestra página web inteligente, donde la IA anticipa tus necesidades.</p>
                                     </div>
-                                    <a href="/ia/inicioia" className='rounded-full px-3 py-[13px] bg-purple1'>
+                                    <a href="/ia" className='rounded-full px-3 py-[13px] bg-purple1'>
                                         <FaArrowRight className='h-10 w-10 md:h-8 md:w-8 lg:h-10 lg:w-10 rounded-full m-3' />
                                     </a>
                                 </div>
@@ -290,7 +290,7 @@ const Home = () => {
                                     <div >
                                         <p className="text-sm font-semibold leading-6 text-gray-700 font-ubuntu ">Experimenta la diferencia con nuestra página web, potenciada por inteligencia artificial.</p>
                                     </div>
-                                    <a href="/ia/inicioia" className='rounded-full px-3 py-[13px] bg-purple1'>
+                                    <a href="/ia" className='rounded-full px-3 py-[13px] bg-purple1'>
                                         <FaArrowRight className=' h-10 w-10 md:h-8 md:w-8 lg:h-10 lg:w-10 rounded-full m-3' />
                                     </a>
                                 </div>
@@ -300,7 +300,7 @@ const Home = () => {
                                     <div >
                                         <p className="text-sm font-semibold leading-6 text-gray-700 font-ubuntu ">Explora un nuevo nivel de interactividad con nuestra página web impulsada por IA.</p>
                                     </div>
-                                    <a href="/ia/inicioia" className='rounded-full px-3 py-[13px] bg-purple1'>
+                                    <a href="/ia" className='rounded-full px-3 py-[13px] bg-purple1'>
                                         <FaArrowRight className='h-10 w-10 md:h-8 md:w-8 lg:h-10 lg:w-10 rounded-full m-3' />
                                     </a>
                                 </div>

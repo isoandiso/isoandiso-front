@@ -44,7 +44,7 @@ const links = [
     // },
 ];
 
-const LayoutAI = () => {
+const Ia = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLgScreen, setIsLgScreen] = useState(window.innerWidth >= 1024);
 
@@ -205,6 +205,6 @@ const LayoutAI = () => {
         </div>
     )
 }
-export default LayoutAI
+export default Ia
 
 

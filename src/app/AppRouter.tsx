@@ -8,6 +8,7 @@ import Blog from './publicroutes/blog/Blog';
 import Contact from './publicroutes/contact/Contact';
 import LogIn from './publicroutes/login/LogIn';
 import SignIn from './publicroutes/signin/SignIn';
+import Ia from './publicroutes/ia/Ia'
 
 //RUTAS PRIVADAS
 import PrivateRoutes from './privateroutes/PrivateRoutes';
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       { element: <Contact />, path: '/contacto' },
       { element: <LogIn />, path: '/login' },
       { element: <SignIn />, path: '/signin' },
+      { element: <Ia />, path: '/ia' },
     ],
   },
   {

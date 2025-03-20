@@ -29,7 +29,7 @@ const links = [
         id: 2,
     },
     {
-        link: "/ia/inicioia",
+        link: "/ia",
         text: "Servicios",
         id: 3,
     },
@@ -40,7 +40,7 @@ const links = [
     },
     {
         link: "/contacto",
-        text: "contacto",
+        text: "Contacto",
         id: 5,
     },
 
