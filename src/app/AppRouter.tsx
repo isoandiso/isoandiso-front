@@ -9,6 +9,7 @@ import Contact from './publicroutes/contact/Contact';
 import LogIn from './publicroutes/login/LogIn';
 import SignIn from './publicroutes/signin/SignIn';
 import Ia from './publicroutes/ia/Ia'
+import SearchProp from './publicroutes/searchprop/SearchProp';
 
 //RUTAS PRIVADAS
 import PrivateRoutes from './privateroutes/PrivateRoutes';
