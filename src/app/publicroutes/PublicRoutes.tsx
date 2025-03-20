@@ -15,7 +15,7 @@ import { SiWechat } from "react-icons/si";
 import ChatBot from '../generalcomponents/chatbot/ChatBot';
 import Loading from '../generalcomponents/loading/Loading';
 import { Dropdown, Button, Avatar } from '@rewind-ui/core'
-import { useCompany } from '../main';
+import { useCompany } from '../main/CompanyContext';
 
 const links = [
     {

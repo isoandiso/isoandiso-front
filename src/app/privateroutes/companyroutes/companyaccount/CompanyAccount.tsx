@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useCompany } from '../../../main';
+import { useState } from 'react'
+import { useCompany } from 'src/app/main/CompanyContext';
 import { Outlet, Link } from 'react-router-dom'
 import { SlSettings } from "react-icons/sl"
 import { Dropdown, Button } from '@rewind-ui/core'

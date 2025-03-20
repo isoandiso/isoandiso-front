@@ -13,7 +13,7 @@ import { BiSolidChat } from "react-icons/bi"
 import { FaRegUser } from "react-icons/fa"
 import ChatBot from '../../generalcomponents/chatbot/ChatBot'
 import { Dropdown, Button } from '@rewind-ui/core'
-import { useCompany } from '../../main';
+import { useCompany } from 'src/app/main/CompanyContext'; 
 
 const links = [
     {

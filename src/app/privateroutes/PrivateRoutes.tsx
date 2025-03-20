@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useCompany } from '../main';
+import { useCompany } from '../main/CompanyContext';
 import Swal from 'sweetalert2';
 import { ReactNode } from 'react';
 
