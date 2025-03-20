@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import apiCalls from '../../api/apiCalls';
-import { Company } from '../../models/apiModels';
-import { DataLogin, DataRegister } from '../../models/models';
+import apiCalls from 'src/api/apiCalls';
+import { Company } from 'src/models/apiModels';
+import { DataLogin,DataRegister } from 'src/models/models';
 
 interface CompanyContextType {
   isLoading: boolean;

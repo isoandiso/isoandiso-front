@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useCompany } from "src/app/main/CompanyContext";
+import { useCompany } from "src/app/CompanyContext";
 
 interface FormInputs {
   email: string;

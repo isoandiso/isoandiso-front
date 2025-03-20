@@ -7,7 +7,7 @@ import RegistroEmpresa from './RegistroEmpresa'
 import ResponsablesDelSistemaDigital from './ResponsablesDeLosSistemasDigitalizados'
 import Sedes from './Sedes'
 import SistemasAdquiridos from './SistemasAdquiridos'
-import { useCompany } from 'src/app/main/CompanyContext'; 
+import { useCompany } from 'src/app/CompanyContext'; 
 import apiCalls from '../../../../api/apiCalls'
 import { Iso } from "../../../../models/apiModels";
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Swal from "sweetalert2";
-import { useCompany } from "src/app/main/CompanyContext";
+import { useCompany } from "src/app/CompanyContext";
 import { useNavigate } from "react-router-dom";
 
 interface FormInputs {
