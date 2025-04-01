@@ -18,11 +18,11 @@ export default function AcquisitionsTypes({selectedCountry,selectedIsos,company,
           setCompanyAcquisitionsTypes([]);
         }
     }
-    async function handleClickSelectedCompanyAcquisitionType(e) {
+    async function handleClickSelectedCompanyAcquisitionType(e:React.MouseEvent<HTMLInputElement, MouseEvent>) {
       setIsSubmitting(true);
       const _selectedIsos = selectedIsos;
       setSelectedIsos([]); // limpiamos el guardador de isos seleccionadas
-      const { value } = e.target;
+      const { value } = (e.target as HTMLInputElement);
     
       // Verificamos que haya un país seleccionado si es que el usuario no tiene uno asignado ya y hay que asignarle el que eligió
       if ((company.countryId === null) && (selectedCountry == null)) {
@@ -52,7 +52,9 @@ export default function AcquisitionsTypes({selectedCountry,selectedIsos,company,
                         // Asignamos el país seleccionado a la empresa si es que el usuario no tiene uno asignado ya
                         let _company = company;
                         if (_company.countryId === null) {
+                          if(selectedCountry){
                           _company = await apiCalls.apiCallsCompany._updateCompanyCountry(company._id, selectedCountry._id);
+                          }
                         }
 
                         if (_company.countryId) {

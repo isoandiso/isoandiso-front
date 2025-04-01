@@ -10,7 +10,7 @@ function AsignaciónSistemasDigitales({company, getCompany}:{ company: Company; 
 
 //VARIABLES
 
-const [companyAreas, setCompanyAreas] = useState<CompanyArea[]>([]);
+const [companyAreas, setCompanyAreas] = useState<CompanyArea[] | null>([]);
 const [acquiredIsos,setAcquiredIsos] = useState<Iso[]>([]);
 const [acquiredIsosNotAssignedInTheAreaSelected,setAcquiredIsosNotAssignedInTheAreaSelected] = useState<Iso[]>([]);
 
@@ -28,7 +28,7 @@ async function deleteIsosOfArea(areaId:string) {
   await getCompany();
 }
 
-async function save(e){
+async function save(e:React.MouseEvent<HTMLButtonElement, MouseEvent>){
   e.preventDefault();
   setIsSubmitting(true);
 
@@ -101,18 +101,18 @@ useEffect(() => {
 
 useEffect(() => {
   //agarramos todas las áreas de la empresa
-  const _companyAreas:CompanyArea[] = company.areaIds; 
+  const _companyAreas:CompanyArea[] | null = company.areaIds; 
   setCompanyAreas(_companyAreas);
 
   let selectedAreaUpdated;
   if(selectedArea){
-    selectedAreaUpdated = _companyAreas.find(area=>area._id===selectedArea._id);
+    selectedAreaUpdated = _companyAreas?.find(area=>area._id===selectedArea._id);
   }
 
   if(selectedAreaUpdated){
     //actualizamos el area seleccionada con las isos que se le agregaron o eliminaron , si el área ya tiene todas las isos adquiridas asignadas entonces se le pondrá null
     const _acquiredIsos:Iso[] = company.acquisitionIds.flatMap((acquisition:CompanyAcquisition)=>acquisition.isoIds.map(iso=>iso));
-    setSelectedArea((selectedAreaUpdated as CompanyArea).isoIds.length != _acquiredIsos.length ? selectedAreaUpdated : null);
+    setSelectedArea((selectedAreaUpdated as CompanyArea).isoIds?.length != _acquiredIsos.length ? selectedAreaUpdated : null);
     setCompanyAreas(_companyAreas);
   }else{
     setCompanyAreas(_companyAreas);
@@ -122,7 +122,7 @@ useEffect(() => {
 
 useEffect(() => {
   if(selectedArea){
-    const _acquiredIsosNotAssignedInTheAreaSelected = acquiredIsos.filter(iso=>!selectedArea.isoIds.some(_iso=>_iso._id===iso._id));
+    const _acquiredIsosNotAssignedInTheAreaSelected = acquiredIsos.filter(iso=>!selectedArea.isoIds?.some(_iso=>_iso._id===iso._id));
     setAcquiredIsosNotAssignedInTheAreaSelected(_acquiredIsosNotAssignedInTheAreaSelected);
   }
 },[selectedArea]);
@@ -159,12 +159,14 @@ useEffect(() => {
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                               
                               {/* //Mostramos todas las áreas que no tienen asignadas ninguna iso */}
-                              <select className={Styles.inputDecorated} onChange={(e)=> {setSelectedArea(companyAreas.find(area=>area._id === e.target.value) || null);setSelectedIsosIds([]);}} value={selectedArea ? selectedArea._id : ""}>
+                              <select className={Styles.inputDecorated} onChange={(e)=> {setSelectedArea(companyAreas?.find(area=>area._id === e.target.value) || null);setSelectedIsosIds([]);}} value={selectedArea ? selectedArea._id : ""}>
                                 <option value="">Seleccione un área</option>
                                 {
+                                    companyAreas 
+                                    &&
                                     companyAreas
                                     //filtramos para mostrar solo las áreas que no tienen todas las isos asignadas y que por endé se le pueden seguir asignando isos
-                                    .filter(area=>area.isoIds.length != acquiredIsos.length)
+                                    .filter(area=>area.isoIds?.length != acquiredIsos.length)
                                     .map((companyArea,companyAreaIndex)=>{
                                       return <option key={companyAreaIndex} value={companyArea._id}>{companyArea.name}</option>
                                     })
@@ -224,8 +226,10 @@ useEffect(() => {
 
                                 <tbody style={{textAlign: 'center'}}>
                                 {
+                                        companyAreas
+                                        &&
                                         //Areas con isos asignadas
-                                        companyAreas.filter(area=>area.isoIds.length>0)
+                                        companyAreas.filter(area=>area.isoIds?.length && area.isoIds.length > 0)
                                         .map((area: CompanyArea, index) => {
 
                                           // Generamos la fila de la tabla
@@ -236,7 +240,7 @@ useEffect(() => {
                                               </td>
 
                                               <td style={{ border: '1px solid black', padding: '8px' }}>
-                                                {area.isoIds.map((iso, isoIndex) => (
+                                                {area.isoIds?.map((iso, isoIndex) => (
                                                     <p key={isoIndex}>{iso.name}</p>
                                                   ))}
                                               </td>

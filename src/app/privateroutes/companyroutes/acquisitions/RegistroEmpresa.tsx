@@ -2,11 +2,11 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import Styles from './styles.module.css'
 import apiCalls from '../../../../api/apiCalls'
-import { Company } from 'app/models/apiModels';
+import { Company } from 'src/models/apiModels';
 
 function RegistroEmpresa({company,getCompany,handleViewChange}:{ company: Company; getCompany: () => Promise<void>; handleViewChange:(view: string) => void }) {
 
-  //VARiABLES
+  //VARIABLES
 
   const [ruc, setRuc] = useState<string>("");
   const [socialReason, setsocialReason] = useState<string>("");
@@ -173,7 +173,7 @@ function RegistroEmpresa({company,getCompany,handleViewChange}:{ company: Compan
                             <label><strong>Datos de la empresa:</strong></label>
                             <div><label>Ruc:</label><input required type="text" className={Styles.inputDecorated} value={ruc} onChange={(e) => setRuc(e.target.value)} maxLength={14}/></div>
                             <div><label>Razón social:</label><input required type="text" className={Styles.inputDecorated} value={socialReason} onChange={(e) => setsocialReason(e.target.value)} maxLength={200}/></div>
-                            <div><label>País:</label><input required type="text" className={Styles.inputDecorated} placeholder={company.countryId.name} disabled/></div>
+                            <div><label>País:</label><input required type="text" className={Styles.inputDecorated} placeholder={company.countryId?.name} disabled/></div>
                             <div><label>Provincia:</label><input required type="text" className={Styles.inputDecorated} value={province} onChange={(e) => setProvince(e.target.value)} maxLength={50}/></div>
                             <div><label>Ciudad:</label><input required type="text" className={Styles.inputDecorated} value={city} onChange={(e) => setCity(e.target.value)} maxLength={50}/></div>
                             <div><label>Dirección:</label><input required type="text" className={Styles.inputDecorated} value={address} onChange={(e) => setAddress(e.target.value)} maxLength={200}/></div>

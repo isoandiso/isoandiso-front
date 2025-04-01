@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Styles from './styles.module.css';
 import Swal from "sweetalert2";
 import { MdDelete } from "react-icons/md";
-import { Company,CompanyArea,Employee,employeeNationality,CompanySite,Rol } from "../../../../models/apiModels";
+import { Company,CompanyArea,Employee,EmployeeNationality,CompanySite,Rol } from "../../../../models/apiModels";
 import apiCalls from '../../../../api/apiCalls'
 
 function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company; getCompany: () => Promise<void> }) {
@@ -12,43 +12,43 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [companyAreasWithIso, setCompanyAreasWithIso] = useState<CompanyArea[]>([]);
   const [companyAreasWithIsoAndEmployeeAsigned, setCompanyAreasWithIsoAndEmployeeAsigned] = useState<CompanyArea[]>([]);
-  const [nationalities, setNationalities] = useState<employeeNationality[]>([]);
-  const [sites,setSites] = useState<CompanySite[]>([]);
+  const [nationalities, setNationalities] = useState<EmployeeNationality[]>([]);
+  const [sites,setSites] = useState<CompanySite[] | null>([]);
   const [area,setArea] = useState<CompanyArea>();
   const [rols,setRols] = useState<Rol[]>([]);
   const [employeeData, setEmployeeData] = useState<Employee>({
-    _id: "",
-    name: null,
-    lastname: null,
-    email: "",
-    password: null,
-    dni: "",
-    mothers_lastname: "",
-    fathers_lastname: "",
-    birthDate: new Date(1920, 1, 1),
-    companyAreaId: "",
-    charge: "",
-    entryDate: new Date(1920, 1, 1),
-    contractTerminationDate: null,
-    areaEntryDate: new Date(1920, 1, 1),
-    province: "",
-    city: "",
-    address: "",
-    district: "",
-    corporateEmail: "",
-    nationalityId: "",
-    gender: "",
-    civilStatus: "",
-    personalPhone: "",
-    facialRecognition: null,
-    digitalSignature: null,
-    status: "Activo",
-    employeeSiteId: "",
-    rolId: "",
-    sizePants: 26,
-    sizePolo: 'XS',
-    sizeShoe: 36,
-    companyIds: [],
+      _id: "",
+      name: null,
+      lastname: null,
+      email: "",
+      password: null,
+      dni: "",
+      mothers_lastname: "",
+      fathers_lastname: "",
+      birthDate: new Date(1920, 1, 1),
+      companyAreaId: "",
+      charge: "",
+      entryDate: new Date(1920, 1, 1),
+      contractTerminationDate: null,
+      areaEntryDate: new Date(1920, 1, 1),
+      province: "",
+      city: "",
+      address: "",
+      district: "",
+      corporateEmail: "",
+      nationalityId: "",
+      gender: "",
+      civilStatus: "",
+      personalPhone: "",
+      facialRecognition: null,
+      digitalSignature: null,
+      status: "Activo",
+      employeeSiteId: "",
+      rolId: "",
+      sizePants: 26,
+      sizePolo: 'XS',
+      sizeShoe: 36,
+      companyIds: [],
   });
   const [modal, setModal] = useState<Boolean>(false);
   const [haveFinalizationDate, setHaveFinalizationDate] = useState<Boolean>(false);
@@ -117,12 +117,12 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
     })
   }
 
-  async function handleSubmit(e){
+  async function handleSubmit(e:React.SyntheticEvent){
     e.preventDefault();
     setIsSubmitting(true);
 
     //primero verificamos que el trabajador ya no esté asignado en ninguna área (no debería repetirse el email del trabajador en la misma compañia)
-    const _alreadyAssignedEmployee = companyAreasWithIsoAndEmployeeAsigned.some(area=>area.responsibleEmployeeId.email === employeeData.email);
+    const _alreadyAssignedEmployee = companyAreasWithIsoAndEmployeeAsigned.some(area=>area.responsibleEmployeeId?.email === employeeData.email);
 
     if(_alreadyAssignedEmployee){
         await Swal.fire({
@@ -188,7 +188,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
    _getRols();
 
    //seteamos las sedes de la empresa
-   const sites:CompanySite[] = company.siteIds;
+   const sites:CompanySite[] | null= company.siteIds;
    setSites(sites);
 
   },[])
@@ -234,7 +234,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
                             {/* SISTEMAS DIGITALES */}
                             <div className={Styles.responsableDelSistemaDigitaColumns}>
                                   {
-                                    companyArea.isoIds.map((iso,isoIndex)=> <p key={isoIndex}>{iso.name}</p> )
+                                    companyArea.isoIds?.map((iso,isoIndex)=> <p key={isoIndex}>{iso.name}</p> )
                                   }
                             </div>
                             
@@ -271,13 +271,13 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
                                               </td>
 
                                               <td style={{ border: '1px solid black', padding: '8px' }}>
-                                                {area.isoIds.map((iso, isoIndex) => (
+                                                {area.isoIds?.map((iso, isoIndex) => (
                                                   <p key={isoIndex}>{iso.name}</p>
                                                 ))}
                                               </td>
 
                                               <td style={{ border: '1px solid black', padding: '8px' }}>
-                                                    <p >{area.responsibleEmployeeId.email}</p>
+                                                    <p >{area.responsibleEmployeeId?.email}</p>
                                               </td>
 
                                               <td style={{ border: '1px solid black', padding: '8px' }}>
@@ -633,7 +633,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
                           <select required className={Styles.inputDecorated} value={employeeData.employeeSiteId} onChange={(e) => setEmployeeData({ ...employeeData, employeeSiteId: e.target.value })}>
                                 <option value="">Seleccione una opción</option>
                                 {
-                                  sites.map((site,indexSite) => <option key={indexSite} value={site._id}>{site.name}</option>)
+                                  sites?.map((site,indexSite) => <option key={indexSite} value={site._id}>{site.name}</option>)
                                 }
                           </select>
 

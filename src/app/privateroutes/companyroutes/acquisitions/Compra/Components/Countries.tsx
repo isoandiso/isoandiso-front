@@ -3,7 +3,7 @@ import { FiAlertCircle } from "react-icons/fi";
 import apiCalls from '../../../../../../api/apiCalls'
 import { Iso,CompanyCountry,Company } from "../../../../../../models/apiModels";
 
-export default function Countries({company,setSelectedCountry,setSelectedIsos}:{company:Company,setSelectedCountry:React.Dispatch<React.SetStateAction<CompanyCountry | null>>,setSelectedIsos:Iso[]}){
+export default function Countries({company,setSelectedCountry,setSelectedIsos}:{company:Company,setSelectedCountry:React.Dispatch<React.SetStateAction<CompanyCountry | null>>,setSelectedIsos:React.Dispatch<React.SetStateAction<Iso[]>>}){
     
     //VARIABLES
     const [countries, setCountries] = useState<CompanyCountry[]>([]);
@@ -17,7 +17,7 @@ export default function Countries({company,setSelectedCountry,setSelectedIsos}:{
             setCountries([]);
         }
     }
-    function _handlecountrySelectChange(e){
+    function _handlecountrySelectChange(e:React.ChangeEvent<HTMLSelectElement>){
         setSelectedIsos([]); // limpiamos el guardador de isos seleccionadas
         const {value} = e.target;
         const country = countries.find(country=>country.name===value);

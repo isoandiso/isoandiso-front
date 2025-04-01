@@ -17,9 +17,9 @@ export default function Isos({company,setSelectedIsos,selectedIsos,selectedCount
             setIsos([]);
         }
     }
-    function _handleIsoCheckboxChange(e) {
+    function _handleIsoCheckboxChange(e:React.ChangeEvent<HTMLInputElement>) {
         const { value, checked } = e.target;
-        const isoSelected: Iso | null = selectedCountry ? selectedCountry.isoIds.find((isoOfCountry) => isoOfCountry.name === value) || null : null;
+        const isoSelected: Iso | null = selectedCountry ? selectedCountry.isoIds.find((isoOfCountry) => isoOfCountry?.name === value) || null : null;
         if(isoSelected !== null){
             if (checked) {
                 setSelectedIsos((prev) => [...prev, isoSelected]);
@@ -56,7 +56,7 @@ export default function Isos({company,setSelectedIsos,selectedIsos,selectedCount
                                                 <>
                                                     {
                                                         //si la iso no se encuenta en el país seleccionado entonces se mostrará pero no se podrá seleccionar
-                                                        !selectedCountry?.isoIds.some(isoOfCountry=>isoOfCountry._id === iso._id)
+                                                        !selectedCountry?.isoIds.some(isoOfCountry=>isoOfCountry?._id === iso._id)
                                                         ?
                                                         <FaSquare style={{ cursor:'pointer',color: "darkgray", fontSize: "16px",display:'inline',alignSelf:'center',opacity:'0.5' }} />
                                                         :

@@ -3,7 +3,7 @@ import { MdDelete } from "react-icons/md";
 import Swal from 'sweetalert2';
 import Styles from './styles.module.css'
 import apiCalls from '../../../../api/apiCalls'
-import { Company } from 'app/models/apiModels';
+import { Company } from 'src/models/apiModels';
 
 function Sedes({company,getCompany}:{ company: Company; getCompany: () => Promise<void> }) {
 
@@ -133,7 +133,7 @@ async function _submit(event:React.FormEvent){
 
                             <tbody style={{textAlign: 'center'}}>
                                 {
-                                    company.siteIds.map((site, index:number) => {
+                                    company.siteIds?.map((site, index:number) => {
                                         //no mostramos la sede principal para que no la pueda eliminar
                                         if (index > 0) return (
                                             <tr key={index} style={{border: '1px solid black'}}>

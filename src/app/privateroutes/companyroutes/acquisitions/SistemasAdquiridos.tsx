@@ -1,5 +1,5 @@
 import Styles from './styles.module.css'
-import { Company } from 'app/models/apiModels';
+import { Company } from 'src/models/apiModels';
 
 function SistemasAdquiridos({company}:{ company: Company }) {
 
