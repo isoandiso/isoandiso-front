@@ -8,7 +8,10 @@ import { Employee } from 'src/models/apimodels/Employee';
 import { EmployeeNationality } from 'src/models/apimodels/EmployeeNationality';
 import { CompanySite } from 'src/models/apimodels/CompanySite';
 import { Rol } from 'src/models/apimodels/Rol';
-import apiCalls from '../../../../api/apiCalls'
+import _api_calls_company from 'src/api/apicalls/_api_calls_company';
+import _api_calls_company_area from 'src/api/apicalls/_api_calls_company_area';
+import _api_calls_employee_nationality from 'src/api/apicalls/_api_calls_employee_nationality';
+import _api_calls_rol from 'src/api/apicalls/_api_calls_rol';
 
 function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company; getCompany: () => Promise<void> }) {
   
@@ -61,7 +64,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
   //FUNCTIONS
 
   async function deleteEmployeeOfArea(areaId:string) {
-    await apiCalls.apiCallsCompanyArea._deleteEmployeeOfArea(areaId);
+    await _api_calls_company_area._deleteEmployeeOfArea(areaId);
     await getCompany();
   }
 
@@ -137,10 +140,10 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
         })
     }else{
         //creamos el trabajador
-        const createdEmployee:Employee = await apiCalls.apiCallsCompany._createEmployee(employeeData);
+        const createdEmployee:Employee = await _api_calls_company._createEmployee(employeeData);
         if(createdEmployee){
             //agregamos el trabajador al área
-            const companyArea:CompanyArea = await apiCalls.apiCallsCompanyArea._updateResponsibleEmployee(createdEmployee.companyAreaId,createdEmployee._id);
+            const companyArea:CompanyArea = await _api_calls_company_area._updateResponsibleEmployee(createdEmployee.companyAreaId,createdEmployee._id);
             if(companyArea){
               await Swal.fire({
                 icon: "success",
@@ -172,7 +175,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
   useEffect(()=>{
     //seteamos las nacionalidades
     const _getNationalities = async ()=>{
-      const _nationalities = await apiCalls.apiCallsEmployeeNationality._getNationalities();
+      const _nationalities = await _api_calls_employee_nationality._getNationalities();
       if(_nationalities){
         setNationalities(_nationalities);  
       }else{
@@ -183,7 +186,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
 
    //seteamos los roles
    const _getRols = async ()=>{
-      const _rols = await apiCalls.apiCallsRol._getRols()
+      const _rols = await _api_calls_rol._getRols()
       if(_rols){
         setRols(_rols);  
       }else{

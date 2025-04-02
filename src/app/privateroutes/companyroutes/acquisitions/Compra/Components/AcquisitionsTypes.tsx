@@ -1,6 +1,8 @@
 import React, {useEffect,useState} from "react"
 import Swal from 'sweetalert2';
-import apiCalls from '../../../../../../api/apiCalls'
+import _api_calls_company from "src/api/apicalls/_api_calls_company";
+import _api_calls_company_acquisition_type from "src/api/apicalls/_api_calls_company_acquisition_type";
+import _api_calls_company_acquisition from "src/api/apicalls/_api_calls_company_acquisition";
 import { Iso } from "src/models/apimodels/Iso";
 import { CompanyCountry } from "src/models/apimodels/CompanyCountry";
 import { CompanyAcquisitionType } from "src/models/apimodels/CompanyAcquisitionType";
@@ -14,7 +16,7 @@ export default function AcquisitionsTypes({selectedCountry,selectedIsos,company,
     const [isSubmitting, setIsSubmitting] = useState(false);
     //FUNCTIONS
     async function _setCompanyAcquisitionsTypes(){
-        const companyAcquisitionsTypes = await apiCalls.apiCallsCompanyAcquisitionType._getCompanyAcquisitionsTypes();
+        const companyAcquisitionsTypes = await _api_calls_company_acquisition_type._getCompanyAcquisitionsTypes();
 
         if(companyAcquisitionsTypes){
           setCompanyAcquisitionsTypes(companyAcquisitionsTypes);
@@ -57,14 +59,14 @@ export default function AcquisitionsTypes({selectedCountry,selectedIsos,company,
                         let _company = company;
                         if (_company.countryId === null) {
                           if(selectedCountry){
-                          _company = await apiCalls.apiCallsCompany._updateCompanyCountry(company._id, selectedCountry._id);
+                          _company = await _api_calls_company._updateCompanyCountry(company._id, selectedCountry._id);
                           }
                         }
 
                         if (_company.countryId) {
-                          const acquisition: CompanyAcquisition = await apiCalls.apiCallsCompanyAcquisition._createAcquisition(_selectedIsos,selectedCompanyAcquisitionType._id);
+                          const acquisition: CompanyAcquisition = await _api_calls_company_acquisition._createAcquisition(_selectedIsos,selectedCompanyAcquisitionType._id);
                           if (acquisition){
-                              const companyUpdated = await apiCalls.apiCallsCompany._addAcquisitionIdToCompany(company._id, acquisition._id);
+                              const companyUpdated = await _api_calls_company._addAcquisitionIdToCompany(company._id, acquisition._id);
                               if (companyUpdated){
                                   await Swal.fire({
                                     icon: 'success',
