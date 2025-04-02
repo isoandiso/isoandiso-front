@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import apiCalls from 'src/api/apiCalls';
+import _api_calls_company from 'src/api/apicalls/_api_calls_company';
 import { Company } from 'src/models/apimodels/Company';
 import { DataLogin,DataRegister } from 'src/models/models';
 
@@ -25,7 +25,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
 
   const register = async (dataRegister: DataRegister): Promise<boolean> => {
-    const data = await apiCalls.apiCallsCompany._register(dataRegister);
+    const data = await _api_calls_company._register(dataRegister);
     if (data) {
       setCompany(data);
       setIsAuth(true);
@@ -35,7 +35,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
   };
 
   const login = async (dataLogin: DataLogin): Promise<boolean> => {
-    const data = await apiCalls.apiCallsCompany._login(dataLogin);
+    const data = await _api_calls_company._login(dataLogin);
     if (data) {
       setCompany(data);
       setIsAuth(true);
@@ -45,14 +45,14 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
   };
 
   const logout = async (): Promise<void> => {
-    await apiCalls.apiCallsCompany._logout();
+    await _api_calls_company._logout();
     setCompany({} as Company);
     setIsAuth(false);
     window.location.href = "/";
   };
 
   const getCompany = async (): Promise<void> => {
-    const data = await apiCalls.apiCallsCompany._getProfile();
+    const data = await _api_calls_company._getProfile();
     if (data) {
       setCompany(data);
       setIsAuth(true);

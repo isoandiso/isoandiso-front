@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from "react"
 import { FiAlertCircle } from "react-icons/fi";
-import apiCalls from '../../../../../../api/apiCalls'
+import _api_calls_company_country from "src/api/apicalls/_api_calls_company_country";
 import { Iso } from "src/models/apimodels/Iso";
 import { CompanyCountry } from "src/models/apimodels/CompanyCountry";
 import { Company } from "src/models/apimodels/Company";
@@ -12,7 +12,7 @@ export default function Countries({company,setSelectedCountry,setSelectedIsos}:{
 
     //FUNCTIONS
     async function getAllCountries(){
-        const countries = await apiCalls.apiCallsCompanyCountry._getAllCountries();
+        const countries = await _api_calls_company_country._getAllCountries();
         if(countries){
             setCountries(countries);
         }else{

@@ -8,7 +8,7 @@ import ResponsablesDelSistemaDigital from './ResponsablesDeLosSistemasDigitaliza
 import Sedes from './Sedes'
 import SistemasAdquiridos from './SistemasAdquiridos'
 import { useCompany } from 'src/app/CompanyContext'; 
-import apiCalls from '../../../../api/apiCalls'
+import _api_calls_iso from 'src/api/apicalls/_api_calls_iso';
 import { Iso } from 'src/models/apimodels/Iso';
 
 function Acquisitions() {
@@ -26,8 +26,8 @@ function Acquisitions() {
 
   useEffect(()=>{
     async function setIsos(){
-      const isoRRHH = await apiCalls.apiCallsIso._getIsoByNameStartWith("RRHH");
-      const iso9001 = await apiCalls.apiCallsIso._getIsoByNameStartWith("ISO 9001");
+      const isoRRHH = await _api_calls_iso._getIsoByNameStartWith("RRHH");
+      const iso9001 = await _api_calls_iso._getIsoByNameStartWith("ISO 9001");
       setIsoRRHH(isoRRHH);
       setIso9001(iso9001);
     }

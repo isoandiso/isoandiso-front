@@ -6,8 +6,8 @@ import { Company } from 'src/models/apimodels/Company';
 import { CompanyAcquisition } from 'src/models/apimodels/CompanyAcquisition';
 import { CompanyArea } from 'src/models/apimodels/CompanyArea';
 import { Iso } from 'src/models/apimodels/Iso';
-import apiCalls from '../../../../api/apiCalls'
-
+import _api_calls_iso from 'src/api/apicalls/_api_calls_iso';
+import _api_calls_company_area from 'src/api/apicalls/_api_calls_company_area';
 
 function AsignaciónSistemasDigitales({company, getCompany}:{ company: Company; getCompany: () => Promise<void> }) {
 
@@ -27,7 +27,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
 //FRONTEND
 
 async function deleteIsosOfArea(areaId:string) {
-  await apiCalls.apiCallsCompanyArea._deleteIsosOfArea(areaId);
+  await _api_calls_company_area._deleteIsosOfArea(areaId);
   await getCompany();
 }
 
@@ -57,7 +57,7 @@ async function save(e:React.MouseEvent<HTMLButtonElement, MouseEvent>){
 
   //guardamos las isos en el área
   const results = await Promise.all(
-    selectedIsosIds.map((isoId) => apiCalls.apiCallsCompanyArea._addIso(selectedArea._id, isoId))
+    selectedIsosIds.map((isoId) => _api_calls_company_area._addIso(selectedArea._id, isoId))
   );
   
   // Verifica si alguna de las llamadas no retorno su dato.
@@ -91,10 +91,10 @@ useEffect(() => {
   //si las isos "RRHH" y "ISO 9001" no se encuentran en las isos adquiridas las agregamos porque necesitará asignar dichas isos la empresa 
   async function addIsosRRHHAnd9001(){
     if(!_acquiredIsos.some(iso=>iso.name.startsWith("RRHH"))){ 
-      _acquiredIsos.push(await apiCalls.apiCallsIso._getIsoByNameStartWith("RRHH"));
+      _acquiredIsos.push(await _api_calls_iso._getIsoByNameStartWith("RRHH"));
     }
     if(!_acquiredIsos.some(iso=>iso.name.startsWith("ISO 9001"))){
-      _acquiredIsos.push(await apiCalls.apiCallsIso._getIsoByNameStartWith("ISO 9001"));
+      _acquiredIsos.push(await _api_calls_iso._getIsoByNameStartWith("ISO 9001"));
     }
   }
   addIsosRRHHAnd9001();

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { MdDelete } from "react-icons/md";
 import Swal from 'sweetalert2';
 import Styles from './styles.module.css'
-import apiCalls from '../../../../api/apiCalls'
+import _api_calls_company from 'src/api/apicalls/_api_calls_company';
+import _api_calls_company_site from 'src/api/apicalls/_api_calls_company_site';
 import { Company } from 'src/models/apimodels/Company';
 
 function Sedes({company,getCompany}:{ company: Company; getCompany: () => Promise<void> }) {
@@ -20,7 +21,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
 //FRONTEND:
 
 async function deleteOnClick(siteId:string){
-    await apiCalls.apiCallsCompanySite._deleteCompanySite(siteId);
+    await _api_calls_company_site._deleteCompanySite(siteId);
     await getCompany();
 }
 
@@ -53,8 +54,8 @@ async function _submit(event:React.FormEvent){
                 return;
             }
     
-            const site = await apiCalls.apiCallsCompanySite._createCompanySite(name.trim(),address.trim(),city.trim(),province.trim());
-            const _company = site ? await apiCalls.apiCallsCompany._addSedeIdToCompany(company._id,site._id) : null;
+            const site = await _api_calls_company_site._createCompanySite(name.trim(),address.trim(),city.trim(),province.trim());
+            const _company = site ? await _api_calls_company._addSedeIdToCompany(company._id,site._id) : null;
     
             if (_company) {
               // Si todas las respuestas fueron exitosas

@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { MdDelete } from "react-icons/md";
 import Swal from 'sweetalert2';
 import Styles from './styles.module.css'
-import apiCalls from '../../../../api/apiCalls'
+import _api_calls_company from 'src/api/apicalls/_api_calls_company';
+import _api_calls_company_area from 'src/api/apicalls/_api_calls_company_area';
 import { Company } from 'src/models/apimodels/Company';
 
 function AreasCargos({company,getCompany}:{ company: Company; getCompany: () => Promise<void> }) {
@@ -18,7 +19,7 @@ function AreasCargos({company,getCompany}:{ company: Company; getCompany: () => 
   //FRONTEND
 
   async function deleteOnClick(siteId:string){
-    await apiCalls.apiCallsCompanyArea._deleteCompanyArea(siteId);
+    await _api_calls_company_area._deleteCompanyArea(siteId);
     await getCompany();
   }
 
@@ -33,8 +34,8 @@ function AreasCargos({company,getCompany}:{ company: Company; getCompany: () => 
     setIsSubmitting(true)
     const filteredCargos = charges.filter((charge) => charge.trim() !== "");
     if(name!='' && filteredCargos.length != 0){
-      const area = await apiCalls.apiCallsCompanyArea._createCompanyArea(name.trim(),filteredCargos)
-      const _company = area ? await apiCalls.apiCallsCompany._addAreaIdToCompany(company._id,area._id) : null;
+      const area = await _api_calls_company_area._createCompanyArea(name.trim(),filteredCargos)
+      const _company = area ? await _api_calls_company._addAreaIdToCompany(company._id,area._id) : null;
       if (_company){
         // Si todas las respuestas fueron exitosas
         await Swal.fire({

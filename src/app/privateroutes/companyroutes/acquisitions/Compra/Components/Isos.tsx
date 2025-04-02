@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from "react"
 import { FiAlertCircle } from "react-icons/fi";
 import { FaCheckSquare,FaSquare } from "react-icons/fa";
-import apiCalls from '../../../../../../api/apiCalls'
+import _api_calls_iso from "src/api/apicalls/_api_calls_iso";
 import { Iso } from "src/models/apimodels/Iso";
 import { Company } from "src/models/apimodels/Company";
 import { CompanyCountry } from "src/models/apimodels/CompanyCountry";
@@ -12,7 +12,7 @@ export default function Isos({company,setSelectedIsos,selectedIsos,selectedCount
     const [isos, setIsos] = useState<Iso[]>([]);
     //FUNCTIONS
     async function setAllIsos(){
-        const isos:Iso[] = await apiCalls.apiCallsIso._getAllIsos();
+        const isos:Iso[] = await _api_calls_iso._getAllIsos();
         if(isos){
             setIsos(isos);
         }else{

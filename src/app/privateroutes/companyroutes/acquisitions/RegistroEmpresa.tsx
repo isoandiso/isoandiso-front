@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import Styles from './styles.module.css'
-import apiCalls from '../../../../api/apiCalls'
+import _api_calls_company from 'src/api/apicalls/_api_calls_company';
+import _api_calls_company_site from 'src/api/apicalls/_api_calls_company_site';
 import { Company } from 'src/models/apimodels/Company';
 
 function RegistroEmpresa({company,getCompany,handleViewChange}:{ company: Company; getCompany: () => Promise<void>; handleViewChange:(view: string) => void }) {
@@ -109,17 +110,17 @@ function RegistroEmpresa({company,getCompany,handleViewChange}:{ company: Compan
             return;
         }
 
-        const rucResponse = await apiCalls.apiCallsCompany._updateRuc(company._id,ruc.trim());
-        const socialReasonResponse = await apiCalls.apiCallsCompany._updateSocialReason(company._id,socialReason.trim());
-        const provinceResponse = await apiCalls.apiCallsCompany._updateProvince(company._id,province.trim());
-        const cityResponse = await apiCalls.apiCallsCompany._updateCity(company._id,city.trim());
-        const addressResponse = await apiCalls.apiCallsCompany._updateAddress(company._id,address.trim());
-        const economicActivityResponse = await apiCalls.apiCallsCompany._updateEconomicActivity(company._id,economicActivity.trim());
-        const economicSectorResponse = await  apiCalls.apiCallsCompany._updateEconomicSector(company._id,economicSector.trim());
-        const companySizeResponse = await apiCalls.apiCallsCompany._updateCompanySize(company._id,companySize);
+        const rucResponse = await _api_calls_company._updateRuc(company._id,ruc.trim());
+        const socialReasonResponse = await _api_calls_company._updateSocialReason(company._id,socialReason.trim());
+        const provinceResponse = await _api_calls_company._updateProvince(company._id,province.trim());
+        const cityResponse = await _api_calls_company._updateCity(company._id,city.trim());
+        const addressResponse = await _api_calls_company._updateAddress(company._id,address.trim());
+        const economicActivityResponse = await _api_calls_company._updateEconomicActivity(company._id,economicActivity.trim());
+        const economicSectorResponse = await  _api_calls_company._updateEconomicSector(company._id,economicSector.trim());
+        const companySizeResponse = await _api_calls_company._updateCompanySize(company._id,companySize);
         //creamos y agregamos la sede principal
-        const mainSite = await apiCalls.apiCallsCompanySite._createCompanySite("Sede principal",address,city,province);
-        const updatedCompany = mainSite ? await apiCalls.apiCallsCompany._addSedeIdToCompany(company._id,mainSite._id) : null;
+        const mainSite = await _api_calls_company_site._createCompanySite("Sede principal",address,city,province);
+        const updatedCompany = mainSite ? await _api_calls_company._addSedeIdToCompany(company._id,mainSite._id) : null;
 
         if (
           rucResponse &&
