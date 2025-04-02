@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import apiCalls from 'src/api/apiCalls';
-import { Company } from 'src/models/apiModels';
+import { Company } from 'src/models/apimodels/Company';
 import { DataLogin,DataRegister } from 'src/models/models';
 
 interface CompanyContextType {

@@ -1,7 +1,11 @@
 import React, {useEffect,useState} from "react"
 import Swal from 'sweetalert2';
 import apiCalls from '../../../../../../api/apiCalls'
-import { Iso,CompanyCountry,CompanyAcquisitionType,CompanyAcquisition, Company } from "../../../../../../models/apiModels";
+import { Iso } from "src/models/apimodels/Iso";
+import { CompanyCountry } from "src/models/apimodels/CompanyCountry";
+import { CompanyAcquisitionType } from "src/models/apimodels/CompanyAcquisitionType";
+import { CompanyAcquisition } from "src/models/apimodels/CompanyAcquisition";
+import { Company } from "src/models/apimodels/Company";
 
 export default function AcquisitionsTypes({selectedCountry,selectedIsos,company,getCompany,setSelectedIsos}:{selectedCountry: CompanyCountry | null,selectedIsos:Iso[],company:Company,getCompany:() => Promise<void>,setSelectedIsos:React.Dispatch<React.SetStateAction<Iso[]>>}){
 

@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import Styles from './styles.module.css';
 import { MdDelete } from "react-icons/md";
 import Swal from 'sweetalert2';
-import { Company,CompanyAcquisition,CompanyArea,Iso } from "../../../../models/apiModels";
+import { Company } from 'src/models/apimodels/Company';
+import { CompanyAcquisition } from 'src/models/apimodels/CompanyAcquisition';
+import { CompanyArea } from 'src/models/apimodels/CompanyArea';
+import { Iso } from 'src/models/apimodels/Iso';
 import apiCalls from '../../../../api/apiCalls'
 
 

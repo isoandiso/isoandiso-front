@@ -1,7 +1,9 @@
 import React, { useEffect,useState } from "react"
 import { FiAlertCircle } from "react-icons/fi";
 import apiCalls from '../../../../../../api/apiCalls'
-import { Iso,CompanyCountry,Company } from "../../../../../../models/apiModels";
+import { Iso } from "src/models/apimodels/Iso";
+import { CompanyCountry } from "src/models/apimodels/CompanyCountry";
+import { Company } from "src/models/apimodels/Company";
 
 export default function Countries({company,setSelectedCountry,setSelectedIsos}:{company:Company,setSelectedCountry:React.Dispatch<React.SetStateAction<CompanyCountry | null>>,setSelectedIsos:React.Dispatch<React.SetStateAction<Iso[]>>}){
     

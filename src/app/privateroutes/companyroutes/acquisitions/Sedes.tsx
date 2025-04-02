@@ -3,7 +3,7 @@ import { MdDelete } from "react-icons/md";
 import Swal from 'sweetalert2';
 import Styles from './styles.module.css'
 import apiCalls from '../../../../api/apiCalls'
-import { Company } from 'src/models/apiModels';
+import { Company } from 'src/models/apimodels/Company';
 
 function Sedes({company,getCompany}:{ company: Company; getCompany: () => Promise<void> }) {
 

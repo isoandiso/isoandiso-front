@@ -9,7 +9,7 @@ import Sedes from './Sedes'
 import SistemasAdquiridos from './SistemasAdquiridos'
 import { useCompany } from 'src/app/CompanyContext'; 
 import apiCalls from '../../../../api/apiCalls'
-import { Iso } from "../../../../models/apiModels";
+import { Iso } from 'src/models/apimodels/Iso';
 
 function Acquisitions() {
 

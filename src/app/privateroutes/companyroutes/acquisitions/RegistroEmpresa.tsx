@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import Styles from './styles.module.css'
 import apiCalls from '../../../../api/apiCalls'
-import { Company } from 'src/models/apiModels';
+import { Company } from 'src/models/apimodels/Company';
 
 function RegistroEmpresa({company,getCompany,handleViewChange}:{ company: Company; getCompany: () => Promise<void>; handleViewChange:(view: string) => void }) {
 

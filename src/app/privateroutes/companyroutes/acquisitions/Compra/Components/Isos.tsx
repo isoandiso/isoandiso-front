@@ -2,7 +2,9 @@ import React, { useEffect,useState } from "react"
 import { FiAlertCircle } from "react-icons/fi";
 import { FaCheckSquare,FaSquare } from "react-icons/fa";
 import apiCalls from '../../../../../../api/apiCalls'
-import { Iso,Company,CompanyCountry } from "../../../../../../models/apiModels";
+import { Iso } from "src/models/apimodels/Iso";
+import { Company } from "src/models/apimodels/Company";
+import { CompanyCountry } from "src/models/apimodels/CompanyCountry";
 
 export default function Isos({company,setSelectedIsos,selectedIsos,selectedCountry}:{company:Company,setSelectedIsos:React.Dispatch<React.SetStateAction<Iso[]>>,selectedIsos:Iso[],selectedCountry:CompanyCountry | null}){
 

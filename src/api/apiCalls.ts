@@ -1,7 +1,8 @@
 import { AxiosError } from 'axios';
 import api from "./api";
 import Swal from "sweetalert2";
-import { Employee, Iso } from "../models/apiModels"
+import { Employee } from 'src/models/apimodels/Employee';
+import { Iso } from 'src/models/apimodels/Iso';
 import { DataRegister,DataLogin } from "../models/models";
 
 const apiCalls = {

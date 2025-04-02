@@ -4,7 +4,9 @@ import Subheader from '../Components/Subheader';
 import Countries from '../Components/Countries';
 import Isos from '../Components/Isos';
 import AcquisitionsTypes from '../Components/AcquisitionsTypes';
-import { Company,Iso,CompanyCountry } from "../../../../../../models/apiModels";
+import { Company } from 'src/models/apimodels/Company';
+import { Iso } from 'src/models/apimodels/Iso';
+import { CompanyCountry } from 'src/models/apimodels/CompanyCountry';
 
 function Compra({company,getCompany}:{ company: Company; getCompany: () => Promise<void> }) {
 

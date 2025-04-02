@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import Styles from './styles.module.css';
 import Swal from "sweetalert2";
 import { MdDelete } from "react-icons/md";
-import { Company,CompanyArea,Employee,EmployeeNationality,CompanySite,Rol } from "../../../../models/apiModels";
+import { Company } from 'src/models/apimodels/Company';
+import { CompanyArea } from 'src/models/apimodels/CompanyArea';
+import { Employee } from 'src/models/apimodels/Employee';
+import { EmployeeNationality } from 'src/models/apimodels/EmployeeNationality';
+import { CompanySite } from 'src/models/apimodels/CompanySite';
+import { Rol } from 'src/models/apimodels/Rol';
 import apiCalls from '../../../../api/apiCalls'
 
 function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company; getCompany: () => Promise<void> }) {

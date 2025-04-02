@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useCompany } from 'src/app/CompanyContext';
-import { Company } from 'src/models/apiModels';
+import { Company } from 'src/models/apimodels/Company';
 //import api from '../../settings/api';
 import Swal from 'sweetalert2';
 
