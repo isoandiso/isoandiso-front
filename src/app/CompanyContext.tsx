@@ -1,14 +1,14 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import _api_calls_company from 'src/api/apicalls/_api_calls_company';
 import { Company } from 'src/models/apimodels/Company';
-import { DataLogin,DataRegister } from 'src/models/models';
+import { CompanyDataLogin,CompanyDataRegister } from 'src/models/models';
 
 interface CompanyContextType {
   isLoading: boolean;
   company: Company;
   isAuth: boolean;
-  register: (dataRegister: DataRegister) => Promise<boolean>;
-  login: (dataLogin: DataLogin) => Promise<boolean>;
+  register: (dataRegister: CompanyDataRegister) => Promise<boolean>;
+  login: (dataLogin: CompanyDataLogin) => Promise<boolean>;
   logout: () => Promise<void>;
   getCompany: () => Promise<void>;
 }
@@ -24,7 +24,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
   const [company, setCompany] = useState<Company>({} as Company);
   const [isAuth, setIsAuth] = useState<boolean>(false);
 
-  const register = async (dataRegister: DataRegister): Promise<boolean> => {
+  const register = async (dataRegister: CompanyDataRegister): Promise<boolean> => {
     const data = await _api_calls_company._register(dataRegister);
     if (data) {
       setCompany(data);
@@ -34,7 +34,7 @@ const CompanyProvider: React.FC<CompanyProviderProps> = ({ children }) => {
     return false;
   };
 
-  const login = async (dataLogin: DataLogin): Promise<boolean> => {
+  const login = async (dataLogin: CompanyDataLogin): Promise<boolean> => {
     const data = await _api_calls_company._login(dataLogin);
     if (data) {
       setCompany(data);

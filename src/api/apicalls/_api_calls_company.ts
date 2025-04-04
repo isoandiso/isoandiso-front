@@ -1,12 +1,12 @@
 import Swal from "sweetalert2";
 import { AxiosError } from 'axios';
 import _api from "../_api";
-import { DataRegister,DataLogin } from "src/models/models";
+import { CompanyDataRegister,CompanyDataLogin } from "src/models/models";
 import { Employee } from "src/models/apimodels/Employee";
 
 const _api_calls_company = {
 
-    async _register(dataRegister: DataRegister) {
+    async _register(dataRegister: CompanyDataRegister) {
         try {
           const { data } = await _api.post('/company/register', dataRegister);
           await Swal.fire({
@@ -26,7 +26,7 @@ const _api_calls_company = {
         }
     },
 
-    async _login(dataLogin: DataLogin) {
+    async _login(dataLogin: CompanyDataLogin) {
         try {
           const { data } = await _api.post('/company/login', dataLogin);
           await Swal.fire({
