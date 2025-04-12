@@ -18,7 +18,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 3000, // Mantén esta configuración si el proyecto lo requiere
   },
   server: {
-    port: 5173, // Puedes ajustar el puerto si es necesario
+    port: 5174, // Puedes ajustar el puerto si es necesario
     open: true, // Opción para abrir el navegador automáticamente al iniciar
   },
 });
