@@ -102,7 +102,7 @@ function SignIn() {
                       rules={{
                         required: "El número es obligatorio",
                         minLength: { value: 9, message: "Debe tener al menos 9 dígitos" },
-                        maxLength: { value: 15, message: "Máximo 15 dígitos" },
+                        maxLength: { value: 50, message: "Máximo 50 dígitos" },
                       }}
                       render={({ field }) => (
                         <input
@@ -136,7 +136,13 @@ function SignIn() {
                       name="password"
                       control={control}
                       defaultValue=""
-                      rules={{ required: "La contraseña es obligatoria", minLength: { value: 8, message: "Mínimo 8 caracteres" }, maxLength: { value: 20, message: "Máximo 20 caracteres" } }}
+                      rules={{
+                        required: "La contraseña es obligatoria",
+                        pattern: {
+                          value: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9\s]).{8,}$/,
+                          message: "La contraseña debe tener como minimo 8 caracteres y contener al menos una letra, un número y un símbolo",
+                        },
+                      }}
                       render={({ field }) => (
                         <input
                           {...field}
@@ -163,7 +169,10 @@ function SignIn() {
                       name="confirm_password"
                       control={control}
                       defaultValue=""
-                      rules={{ required: "La contraseña es obligatoria", minLength: { value: 8, message: "Mínimo 8 caracteres" }, maxLength: { value: 20, message: "Máximo 20 caracteres" }, validate: (value) => value === password || "Las contraseñas no coinciden" }}
+                      rules={{
+                        required: "La confirmación de la contraseña es obligatoria",
+                        validate: (value) => value === password || "Las contraseñas no coinciden",
+                      }}
                       render={({ field }) => (
                         <input
                           {...field}

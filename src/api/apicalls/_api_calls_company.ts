@@ -15,12 +15,11 @@ const _api_calls_company = {
           });
           return data;
         } catch (error) {
-          console.error("Error al intentar registrarse:", error);
-          const axiosError = error as AxiosError;
+          console.error((((error as AxiosError).response?.data as object) as any).message || `Error al intentar registrarse`)
           await Swal.fire({
             icon: "error",
             title: "Error",
-            text: axiosError.message || `Error al intentar registrarse`,
+            text: `Error al intentar registrarse`,
             confirmButtonText: "Entendido",
           });
         }
@@ -35,12 +34,11 @@ const _api_calls_company = {
           })
           return data;
         } catch (error) {
-          console.error("Error al intentar registrarse:", error);
-          const axiosError = error as AxiosError;
+          console.error((((error as AxiosError).response?.data as object) as any).message || `Error al intentar registrarse`)
           await Swal.fire({
             icon: 'error',
             title: "Error",
-            text: axiosError.message || "Error en el inicio de sesión. Verifique los datos ingresados.",
+            text: "Error en el inicio de sesión. Verifique los datos ingresados.",
             confirmButtonText: "Entendido",
           });
         }
@@ -50,7 +48,7 @@ const _api_calls_company = {
         try {
           await _api.post('/company/logout');
         } catch (error) {
-          console.error("Error al cerrar sesión:", error);
+          console.error((((error as AxiosError).response?.data as object) as any).message || `Error al intentar serrar la sesión`)
           await Swal.fire({
             icon: "error",
             title: "Error",
@@ -65,7 +63,7 @@ const _api_calls_company = {
           const { data } = await _api.get('/company/profile');
           return data;
         } catch (error) {
-          console.error("Error al intentar obtener el perfil del usuario:", error);
+          console.error((((error as AxiosError).response?.data as object) as any).message || `Error al intentar obtener el perfil del usuario`)
         }
     },
 
@@ -76,7 +74,7 @@ const _api_calls_company = {
           });
           return data;
         } catch (error) {
-          console.error("Error al intentar actualizar el país de la empresa:", error);
+          console.error((((error as AxiosError).response?.data as object) as any).message || "Error al intentar actualizar el país de la empresa:")
           await Swal.fire({
             icon: "error",
             title: "Error",
@@ -93,7 +91,7 @@ const _api_calls_company = {
           });
           return data;
         } catch (error) {
-          console.error("Error al agregar la adquisición a la empresa:", error);
+          console.error((((error as AxiosError).response?.data as object) as any).message || "Error al agregar la adquisición a la empresa:")
           await Swal.fire({
             icon: "error",
             title: "Error",
@@ -108,7 +106,7 @@ const _api_calls_company = {
           const { data } = await _api.put(`/company/${companyId}/updateRuc`, { ruc: ruc });
           return data;
         } catch (error) {
-            console.error('Error al actualizar el ruc de la empresa:', error);
+          console.error((((error as AxiosError).response?.data as object) as any).message || "Error al actualizar el ruc de la empresa:")
             await Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -123,7 +121,7 @@ const _api_calls_company = {
           const { data } = await _api.put(`/company/${companyId}/updateSocialReason`, { socialReason: socialReason });
           return data;
         } catch (error) {
-            console.error('Error al actualizar la razón social de la empresa:', error);
+            console.error((((error as AxiosError).response?.data as object) as any).message || "Error al actualizar la razón social de la empresa:")
             await Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -138,7 +136,7 @@ const _api_calls_company = {
           const { data } = await _api.put(`/company/${companyId}/updateProvince`, { province: province });
           return data;
         } catch (error) {
-            console.error('Error al actualizar la provincia de la empresa:', error);
+            console.error((((error as AxiosError).response?.data as object) as any).message || "Error al actualizar la provincia de la empresa:")
             await Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -153,7 +151,7 @@ const _api_calls_company = {
           const { data } = await _api.put(`/company/${companyId}/updateCity`, { city: city });
           return data;
         } catch (error) {
-            console.error('Error al actualizar la ciudad de la empresa:', error);
+            console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al actualizar la ciudad de la empresa:');
             await Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -168,7 +166,7 @@ const _api_calls_company = {
           const { data } = await _api.put(`/company/${companyId}/updateAddress`, { address: address });
           return data;
         } catch (error) {
-            console.error('Error al actualizar la dirección de la empresa:', error);
+            console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al actualizar la dirección de la empresa:');
             await Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -183,7 +181,7 @@ const _api_calls_company = {
           const { data } = await _api.put(`/company/${companyId}/updateEconomicActivity`, { economicActivity: economicActivity });
           return data;
         } catch (error) {
-            console.error('Error al actualizar la actividad económica de la empresa:', error);
+            console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al actualizar la actividad económica de la empresa:');
             await Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -198,7 +196,7 @@ const _api_calls_company = {
           const { data } = await _api.put(`/company/${companyId}/updateEconomicSector`, { economicSector: economicSector });
           return data;
         } catch (error) {
-            console.error('Error al actualizar el sector económico de la empresa:', error);
+            console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al actualizar el sector económico de la empresa:');
             await Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -213,7 +211,7 @@ const _api_calls_company = {
           const { data } = await _api.put(`/company/${companyId}/updateCompanySize`, { companySize: companySize });
           return data;
         } catch (error) {
-            console.error('Error al actualizar el tamaño de la empresa:', error);
+            console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al actualizar el tamaño de la empresa:');
             await Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -228,7 +226,7 @@ const _api_calls_company = {
           const { data } = await _api.put(`/company/${companyId}/addSite`, { companySiteId: companySiteId });
           return data;
         } catch (error) {
-            console.error('Error al agregar la sede a la empresa:', error);
+            console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al agregar la sede a la empresa:');
             await Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -243,7 +241,7 @@ const _api_calls_company = {
           const { data } = await _api.put(`/company/${companyId}/addArea`, { companyAreaId: companyAreaId });
           return data;
         } catch (error) {
-            console.error('Error al agregar el área a la empresa:', error);
+            console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al agregar el área a la empresa:');
             await Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -259,7 +257,7 @@ const _api_calls_company = {
             const { data } = await _api.post('/company/createEmployee', dataToSend);
             return data;
           } catch (error) {
-              console.error('Error al crear el trabajador:', error);
+              console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al crear el trabajador:');
               await Swal.fire({
                 icon: 'error',
                 title: 'Error',
