@@ -16,11 +16,6 @@ const PrivateRoutes: React.FC<PrivateRoutesProps> = ({ children }) => {
     }
 
     if (!isAuth) {
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Necesitas iniciar sesión para acceder a este sitio.",
-        });
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
