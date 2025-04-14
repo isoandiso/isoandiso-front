@@ -20,6 +20,7 @@ import CompanyActivity from './privateroutes/companyroutes/companyactivity/Compa
 import Acquisitions from './privateroutes/companyroutes/acquisitions/Acquisitions';
 
 const router = createBrowserRouter([
+  //Rutas públicas
   {
     path: '/',
     element: <PublicRoutes />,
@@ -33,6 +34,8 @@ const router = createBrowserRouter([
       { element: <Ia />, path: '/ia' },
     ],
   },
+
+  //Rutas privadas
   {
     path: '/company',
     element: (<PrivateRoutes>
