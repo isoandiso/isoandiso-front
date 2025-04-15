@@ -100,7 +100,6 @@ function SignIn() {
                       control={control}
                       defaultValue=""
                       rules={{
-                        required: "El número es obligatorio",
                         minLength: { value: 9, message: "Debe tener al menos 9 dígitos" },
                         maxLength: { value: 50, message: "Máximo 50 dígitos" },
                       }}
