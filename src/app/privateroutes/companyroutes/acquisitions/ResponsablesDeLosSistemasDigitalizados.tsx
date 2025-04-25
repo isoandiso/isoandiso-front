@@ -12,6 +12,7 @@ import _api_calls_company from 'src/api/apicalls/_api_calls_company';
 import _api_calls_company_area from 'src/api/apicalls/_api_calls_company_area';
 import _api_calls_employee_nationality from 'src/api/apicalls/_api_calls_employee_nationality';
 import _api_calls_rol from 'src/api/apicalls/_api_calls_rol';
+import _api_calls_employeeCompanyRegistry from 'src/api/apicalls/_api_calls_employeeCompanyRegistry';
 
 function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company; getCompany: () => Promise<void> }) {
   
@@ -27,7 +28,6 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
   const [employeeData, setEmployeeData] = useState<Employee>({
       _id: "",
       name: null,
-      lastname: null,
       email: "",
       password: null,
       dni: "",
@@ -56,29 +56,78 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
       sizePants: 26,
       sizePolo: 'XS',
       sizeShoe: 36,
-      companyIds: [],
+      companyId:null,
   });
   const [modal, setModal] = useState<Boolean>(false);
   const [haveFinalizationDate, setHaveFinalizationDate] = useState<Boolean>(false);
 
-  //FUNCTIONS
+  //USE EFFECT
 
-  async function deleteEmployeeOfArea(areaId:string) {
-    await _api_calls_company_area._deleteEmployeeOfArea(areaId);
-    await getCompany();
-  }
+  useEffect(() => {
+
+    /*
+    Obtenemos las áreas de la empresa que tienen isos asignadas pero no responsables
+    */
+    const companyAreasWithIso = (company.areaIds as CompanyArea[]).filter((companyArea) => companyArea.isoIds && companyArea.isoIds.length>0 && !companyArea.employeeIds);
+    
+    /*
+    Obtenemos las áreas de la empresa que tienen isos asignadas y sí al menos un responsable
+    */
+    const companyAreasWithIsoAndEmployeeAsigned = (company.areaIds as CompanyArea[]).filter((companyArea) => companyArea.isoIds && companyArea.isoIds.length>0 && companyArea.employeeIds && (companyArea.employeeIds.length>0));
+    
+    setCompanyAreasWithIso(companyAreasWithIso);
+    setCompanyAreasWithIsoAndEmployeeAsigned(companyAreasWithIsoAndEmployeeAsigned);
+
+  }, [company]);
+
+  useEffect(()=>{
+    /*
+    Seteamos las nacionalidades
+    */
+    const _getNationalities = async ()=>{
+      const _nationalities = await _api_calls_employee_nationality._getNationalities();
+      if(_nationalities){
+        setNationalities(_nationalities);  
+      }else{
+        setNationalities([]);  
+      }
+    };
+    _getNationalities();
+
+    /*
+    Seteamos los roles
+    */
+    const _getRols = async ()=>{
+      const _rols = await _api_calls_rol._getRols()
+      if(_rols){
+        setRols(_rols);  
+      }else{
+        setRols([]);  
+      }
+    };
+    _getRols();
+
+    /*
+    Seteamos las sedes de la empresa
+    */
+    const sites:CompanySite[] | null= company.siteIds;
+    setSites(sites);
+
+  },[])
+
+  //FUNCTIONS
 
   function showModal(area:CompanyArea){
       setArea(area);
 
-      //le seteamos al employeeData el "companyId","companyAreaId" y "rolId"
+      /*
+      Seteamos al employeeData el "companyId","companyAreaId" y "rolId" para que se reflejen y se carguen en el formulario
+      */
       setEmployeeData((prevEmployeeData) => ({
         ...prevEmployeeData,
-        companyIds: prevEmployeeData.companyIds.includes(company._id)
-        ? prevEmployeeData.companyIds
-        : [...prevEmployeeData.companyIds, company._id], // Solo agrega si no existe
+        companyId: company._id,
         companyAreaId: area?._id || prevEmployeeData.companyAreaId,
-        rolId: rols.find(rol=>rol.name="Jefe")?._id || prevEmployeeData.rolId 
+        rolId: rols.find(rol=>rol.name="Jefe")?._id || prevEmployeeData.rolId //en ésta página siempre se les pondrá "Jefe" hasta que Andy diga lo contrario
       }));
 
       setModal(true);
@@ -88,11 +137,13 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
     setModal(false);
     setEmployeeData({ ...employeeData, contractTerminationDate:null });
     setHaveFinalizationDate(false);
-    //vaceamos los datos de EmployeeData
+
+    /*
+    Vaciamos los datos de EmployeeData
+    */
     setEmployeeData({
       _id: "",
       name: null,
-      lastname: null,
       email: "",
       password: null,
       dni: "",
@@ -121,7 +172,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
       sizePants: 26,
       sizePolo: 'XS',
       sizeShoe: 36,
-      companyIds: [],
+      companyId:null,
     })
   }
 
@@ -129,79 +180,51 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
     e.preventDefault();
     setIsSubmitting(true);
 
-    //primero verificamos que el trabajador ya no esté asignado en ninguna área (no debería repetirse el email del trabajador en la misma compañia)
-    const _alreadyAssignedEmployee = companyAreasWithIsoAndEmployeeAsigned.some(area=>area.responsibleEmployeeId?.email === employeeData.email);
-
+    /*
+    Verificamos que el empleado no esté asignado en otra área (no debería repetirse el email del 
+    empleado en la misma compañia)
+    */
+    const _alreadyAssignedEmployee = companyAreasWithIsoAndEmployeeAsigned.some(area=> area.employeeIds.some(employee=> employee?.email === employeeData.email));
     if(_alreadyAssignedEmployee){
         await Swal.fire({
           icon: "warning",
-          text: `El trabajador con dicho email (${employeeData.email}) ya está asignado a otra área`,
+          text: `El empleado con dicho email (${employeeData.email}) ya está asignado a otra área`,
           confirmButtonText: "Entendido",
         })
-    }else{
-        //creamos el trabajador
-        const createdEmployee:Employee = await _api_calls_company._createEmployee(employeeData);
-        if(createdEmployee){
-            //agregamos el trabajador al área
-            const companyArea:CompanyArea = await _api_calls_company_area._updateResponsibleEmployee(createdEmployee.companyAreaId,createdEmployee._id);
-            if(companyArea){
-              await Swal.fire({
-                icon: "success",
-                text: `Se asignó correctamente el trabajador responsable al área`,
-                confirmButtonText: "Entendido",
-              });
-              await getCompany();
-            }
-        }  
+    }
+    
+    /*
+    Si no está asignado a ningún área entonces procedemos a crearlo (ya que al no estar asignado a 
+    ningún área quiere decir que no está en la compañia y podemos crearlo tranquilamente y agregarlo
+    como responsable del área)
+    */
+    else{
+          const createdEmployee:Employee = await _api_calls_company._createEmployee(employeeData);
+          if(createdEmployee){
+              /*
+              Agregamos el empleado al área
+              */
+              const companyArea:CompanyArea = await _api_calls_company_area._addResponsibleEmployee(createdEmployee.companyAreaId,createdEmployee._id);
+              if(companyArea){
+                Swal.fire({
+                  icon: "success",
+                  text: `Se asignó correctamente el empleado responsable al área`,
+                  confirmButtonText: "Entendido",
+                });
+
+                await getCompany();
+              }
+          }  
     }
 
     closeModal();
     setIsSubmitting(false);
   };
 
-  //USE EFFECT
-
-  useEffect(() => {
-    //áreas de la empresa que tienen isos asignadas y que dichas isos "no tienen" un responsable ya asignado
-    const companyAreasWithIso = (company.areaIds as CompanyArea[]).filter((companyArea) => (companyArea.isoIds.length>0) && !companyArea.responsibleEmployeeId);
-    //áreas de la empresa que tienen isos asignadas y que dichas isos "tienen" un responsable ya asignado
-    const companyAreasWithIsoAndEmployeeAsigned = (company.areaIds as CompanyArea[]).filter((companyArea) => companyArea.responsibleEmployeeId!==null);
-    
-    //setters
-    setCompanyAreasWithIso(companyAreasWithIso);
-    setCompanyAreasWithIsoAndEmployeeAsigned(companyAreasWithIsoAndEmployeeAsigned);
-  }, [company]);
-
-  useEffect(()=>{
-    //seteamos las nacionalidades
-    const _getNationalities = async ()=>{
-      const _nationalities = await _api_calls_employee_nationality._getNationalities();
-      if(_nationalities){
-        setNationalities(_nationalities);  
-      }else{
-        setNationalities([]);  
-      }
-   };
-   _getNationalities();
-
-   //seteamos los roles
-   const _getRols = async ()=>{
-      const _rols = await _api_calls_rol._getRols()
-      if(_rols){
-        setRols(_rols);  
-      }else{
-        setRols([]);  
-      }
-    };
-   _getRols();
-
-   //seteamos las sedes de la empresa
-   const sites:CompanySite[] | null= company.siteIds;
-   setSites(sites);
-
-  },[])
-
-
+  async function deleteEmployeeOfArea(areaId:string,employeeId:string) {
+    await _api_calls_company_area._deleteEmployeeOfArea(areaId,employeeId);
+    await getCompany();
+  }
 
   return (
           <>
@@ -261,42 +284,55 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
                                     <tr>
                                         <th style={{border: '1px solid black', padding: '8px'}}>ÁREA</th>
                                         <th style={{border: '1px solid black', padding: '8px'}}>SISTEMAS DIGITALES</th>
-                                        <th style={{border: '1px solid black', padding: '8px'}}>RESPONSABLE ASIGNADO</th>
+                                        <th style={{border: '1px solid black', padding: '8px'}}>RESPONSABLES ASIGNADOS</th>
                                         <th style={{border: '1px solid black', padding: '8px'}}></th>
                                     </tr>
                                 </thead>
 
                                 <tbody style={{textAlign: 'center'}}>
                                 {
-                                        //Areas con responsable asignado
+                                        //Areas con responsables asignados
                                         companyAreasWithIsoAndEmployeeAsigned
                                         .map((area: CompanyArea, index) => {
                                           // Generamos la fila de la tabla
                                           return (
                                             <tr key={index} style={{ border: '1px solid black' }}>
+
+                                              {/*Columna área */}
                                               <td style={{ border: '1px solid black', padding: '8px' }}>
                                                 <p>{area.name}</p>
                                               </td>
 
+                                              {/*Columna isos */}
                                               <td style={{ border: '1px solid black', padding: '8px' }}>
                                                 {area.isoIds?.map((iso, isoIndex) => (
                                                   <p key={isoIndex}>{iso.name}</p>
                                                 ))}
                                               </td>
 
+                                              {/*Columna responsables */}
                                               <td style={{ border: '1px solid black', padding: '8px' }}>
-                                                    <p >{area.responsibleEmployeeId?.email}</p>
+                                                {/*Retornamos los resonsables por fila */}
+                                                {area.employeeIds?.map((responsibleEmployee, responsibleEmployeeIndex) => (
+                                                  <p key={responsibleEmployeeIndex}>{responsibleEmployee?.email}</p>
+                                                ))}
                                               </td>
 
+                                              {/*Columna iconos de eliminación */}
                                               <td style={{ border: '1px solid black', padding: '8px' }}>
-                                                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                  <MdDelete
-                                                    style={{ cursor: 'pointer', color: 'red' }}
-                                                    size={27}
-                                                    onClick={()=>deleteEmployeeOfArea(area._id)}
-                                                  />
-                                                </div>
+                                                {/*Retornamos los iconos que eliminan cada responsable*/}
+                                                {area.employeeIds?.map((responsibleEmployee, responsibleEmployeeIndex) => (
+                                                    responsibleEmployee &&
+                                                      <div key={responsibleEmployeeIndex} style={{ display: 'flex', justifyContent: 'center' }}>
+                                                        <MdDelete
+                                                          style={{ cursor: 'pointer', color: 'red' }}
+                                                          size={27}
+                                                          onClick={()=>deleteEmployeeOfArea(area._id,responsibleEmployee._id)}
+                                                        />
+                                                      </div>
+                                                ))}
                                               </td>
+                                              
                                             </tr>
                                           );
                                         })

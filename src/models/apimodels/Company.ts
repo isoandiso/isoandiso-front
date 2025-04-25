@@ -22,6 +22,4 @@ export interface Company {
     acquisitionIds: CompanyAcquisition[];
     siteIds: CompanySite[] | null;
     areaIds: CompanyArea[] | null;
-    createdAt?: string;
-    updatedAt?: string;
 }

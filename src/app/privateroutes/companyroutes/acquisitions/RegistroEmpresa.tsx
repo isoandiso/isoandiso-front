@@ -110,17 +110,27 @@ function RegistroEmpresa({company,getCompany,handleViewChange}:{ company: Compan
             return;
         }
 
-        const rucResponse = await _api_calls_company._updateRuc(company._id,ruc.trim());
-        const socialReasonResponse = await _api_calls_company._updateSocialReason(company._id,socialReason.trim());
-        const provinceResponse = await _api_calls_company._updateProvince(company._id,province.trim());
-        const cityResponse = await _api_calls_company._updateCity(company._id,city.trim());
-        const addressResponse = await _api_calls_company._updateAddress(company._id,address.trim());
-        const economicActivityResponse = await _api_calls_company._updateEconomicActivity(company._id,economicActivity.trim());
-        const economicSectorResponse = await  _api_calls_company._updateEconomicSector(company._id,economicSector.trim());
-        const companySizeResponse = await _api_calls_company._updateCompanySize(company._id,companySize);
-        //creamos y agregamos la sede principal
-        const mainSite = await _api_calls_company_site._createCompanySite("Sede principal",address,city,province);
-        const updatedCompany = mainSite ? await _api_calls_company._addSedeIdToCompany(company._id,mainSite._id) : null;
+        const [
+          rucResponse,
+          socialReasonResponse,
+          provinceResponse,
+          cityResponse,
+          addressResponse,
+          economicActivityResponse,
+          economicSectorResponse,
+          companySizeResponse,
+          companySite
+        ] = await Promise.all([
+          _api_calls_company._updateRuc(company._id, ruc.trim()),
+          _api_calls_company._updateSocialReason(company._id, socialReason.trim()),
+          _api_calls_company._updateProvince(company._id, province.trim()),
+          _api_calls_company._updateCity(company._id, city.trim()),
+          _api_calls_company._updateAddress(company._id, address.trim()),
+          _api_calls_company._updateEconomicActivity(company._id, economicActivity.trim()),
+          _api_calls_company._updateEconomicSector(company._id, economicSector.trim()),
+          _api_calls_company._updateCompanySize(company._id, companySize),
+          _api_calls_company_site._createCompanySite("Sede principal", address, city, province, company._id)
+        ]);
 
         if (
           rucResponse &&
@@ -131,13 +141,13 @@ function RegistroEmpresa({company,getCompany,handleViewChange}:{ company: Compan
           economicActivityResponse &&
           economicSectorResponse &&
           companySizeResponse &&
-          updatedCompany
+          companySite
         ) {
           await Swal.fire({
             icon: 'success',
             text: 'Los datos de la empresa se agregaron satisfactoriamente',
             confirmButtonText: 'Entendido'
-          })
+          });
           await getCompany();
           handleViewChange('sedes');
         }

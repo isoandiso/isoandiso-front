@@ -54,10 +54,9 @@ async function _submit(event:React.FormEvent){
                 return;
             }
     
-            const site = await _api_calls_company_site._createCompanySite(name.trim(),address.trim(),city.trim(),province.trim());
-            const _company = site ? await _api_calls_company._addSedeIdToCompany(company._id,site._id) : null;
-    
-            if (_company) {
+            const companySite = await _api_calls_company_site._createCompanySite(name.trim(), address.trim(), city.trim(), province.trim(), company._id);
+
+            if (companySite) {
               // Si todas las respuestas fueron exitosas
               await Swal.fire({
                 icon: 'success',

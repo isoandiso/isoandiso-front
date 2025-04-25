@@ -3,10 +3,11 @@ import Swal from "sweetalert2";
 
 const _api_calls_company_area = {
 
-    async _createCompanyArea(name:string,charges:string[]){
+    async _createCompanyArea(name:string,charges:string[],companyId:string){
       const areaData = {
         name: name,
-        charges: charges
+        charges: charges,
+        companyId:companyId,
       };
       try {
           const { data } = await _api.post('/companyArea', areaData);
@@ -43,7 +44,7 @@ const _api_calls_company_area = {
   
   async _deleteIsosOfArea(areaId:string) {
     try {
-        await _api.delete(`/companyArea/${areaId}/deleteIsos`);
+        await _api.delete(`/companyArea/deleteIsos/${areaId}`);
         await Swal.fire({
             icon: 'success',
             text: 'Isos eliminadas del área correctamente',
@@ -60,9 +61,9 @@ const _api_calls_company_area = {
     }
   },
   
-  async _deleteEmployeeOfArea(areaId:string) {
+  async _deleteEmployeeOfArea(areaId:string,employeeId:string) {
     try {
-        await _api.delete(`/companyArea/${areaId}/deleteEmployee`);
+        await _api.delete(`/companyArea/deleteEmployee/${areaId}/${employeeId}`);
         await Swal.fire({
             icon: 'success',
             text: 'Trabajador eliminado del área correctamente',
@@ -81,7 +82,7 @@ const _api_calls_company_area = {
   
   async _addIso(areaId:string,isoId:string) {
     try {
-      const { data } = await _api.put(`/companyArea/${areaId}/addIso`, { isoId: isoId });
+      const { data } = await _api.put(`/companyArea/addIso/${areaId}/${isoId}`);
       return data;
     } catch (error) {
         console.error('Error al agregar la isos al área:', error);
@@ -94,16 +95,16 @@ const _api_calls_company_area = {
     }
   },
   
-  async _updateResponsibleEmployee(areaId:string,responsibleEmployeeId:string) {
+  async _addResponsibleEmployee(areaId:string,employeeId:string) {
     try {
-      const { data } = await _api.put(`/companyArea/${areaId}/updateResponsibleEmployee`, { responsibleEmployeeId: responsibleEmployeeId });
+      const { data } = await _api.put(`/companyArea/addResponsibleEmployee/${areaId}/${employeeId}`);
       return data;
     } catch (error) {
-      console.error("Error al actualizar el trabajador responsable del área:", error);
+      console.error("Error al agregar el trabajador responsable al área:", error);
       await Swal.fire({
         icon: "error",
         title: "Error",
-        text: `Error al actualizar el trabajador responsable del área`,
+        text: `Error al agregar el trabajador responsable al área`,
         confirmButtonText: "Entendido",
       });
     }

@@ -8,5 +8,6 @@ export interface CompanyArea {
     name: string;
     charges: string[];
     isoIds:Iso[] | null;
-    responsibleEmployeeId: Employee| null;
+    employeeIds: [Employee| null];
+    companyId: string;
 };

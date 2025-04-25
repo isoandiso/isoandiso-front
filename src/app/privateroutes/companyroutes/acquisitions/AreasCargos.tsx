@@ -18,8 +18,8 @@ function AreasCargos({company,getCompany}:{ company: Company; getCompany: () => 
 
   //FRONTEND
 
-  async function deleteOnClick(siteId:string){
-    await _api_calls_company_area._deleteCompanyArea(siteId);
+  async function deleteOnClick(areaId:string){
+    await _api_calls_company_area._deleteCompanyArea(areaId);
     await getCompany();
   }
 
@@ -34,7 +34,7 @@ function AreasCargos({company,getCompany}:{ company: Company; getCompany: () => 
     setIsSubmitting(true)
     const filteredCargos = charges.filter((charge) => charge.trim() !== "");
     if(name!='' && filteredCargos.length != 0){
-      const area = await _api_calls_company_area._createCompanyArea(name.trim(),filteredCargos)
+      const area = await _api_calls_company_area._createCompanyArea(name.trim(),filteredCargos,company._id)
       const _company = area ? await _api_calls_company._addAreaIdToCompany(company._id,area._id) : null;
       if (_company){
         // Si todas las respuestas fueron exitosas

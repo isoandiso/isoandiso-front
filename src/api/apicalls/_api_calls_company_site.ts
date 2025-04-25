@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 
 const _api_calls_company_site = {
 
-    async _createCompanySite(name:string,address:string,city:string,province:string) {
+    async _createCompanySite(name:string,address:string,city:string,province:string,companyId:string) {
       const sedeData = {
           name: name,
           address: address,
@@ -11,7 +11,7 @@ const _api_calls_company_site = {
           province: province
       };
       try {
-          const { data } = await _api.post('/companySite', sedeData);
+          const { data } = await _api.post(`/companySite/${companyId}`, sedeData);
           return data;
         } catch (error) {
             console.error('Error al crear la sede:', error);
