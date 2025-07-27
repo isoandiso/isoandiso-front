@@ -130,7 +130,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
     setIsSubmitting(true);
 
     //primero verificamos que el trabajador ya no esté asignado en ninguna área (no debería repetirse el email del trabajador en la misma compañia)
-    const _alreadyAssignedEmployee = companyAreasWithIsoAndEmployeeAsigned.some(area=>area.responsibleEmployeeId?.email === employeeData.email);
+    const _alreadyAssignedEmployee = companyAreasWithIsoAndEmployeeAsigned.some(area=>area.employeeId?.email === employeeData.email);
 
     if(_alreadyAssignedEmployee){
         await Swal.fire({
@@ -143,7 +143,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
         const createdEmployee:Employee = await _api_calls_company._createEmployee(employeeData);
         if(createdEmployee){
             //agregamos el trabajador al área
-            const companyArea:CompanyArea = await _api_calls_company_area._updateResponsibleEmployee(createdEmployee.companyAreaId,createdEmployee._id);
+            const companyArea:CompanyArea = await _api_calls_company_area._addResponsibleEmployee(createdEmployee.companyAreaId,createdEmployee._id);
             if(companyArea){
               await Swal.fire({
                 icon: "success",
@@ -162,10 +162,11 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
   //USE EFFECT
 
   useEffect(() => {
+    
     //áreas de la empresa que tienen isos asignadas y que dichas isos "no tienen" un responsable ya asignado
-    const companyAreasWithIso = (company.areaIds as CompanyArea[]).filter((companyArea) => (companyArea.isoIds.length>0) && !companyArea.responsibleEmployeeId);
+    const companyAreasWithIso = (company.areaIds as CompanyArea[]).filter((companyArea) => (companyArea.isoIds && companyArea.isoIds.length>0) && !companyArea.employeeId);
     //áreas de la empresa que tienen isos asignadas y que dichas isos "tienen" un responsable ya asignado
-    const companyAreasWithIsoAndEmployeeAsigned = (company.areaIds as CompanyArea[]).filter((companyArea) => companyArea.responsibleEmployeeId!==null);
+    const companyAreasWithIsoAndEmployeeAsigned = (company.areaIds as CompanyArea[]).filter((companyArea) => (companyArea.isoIds && companyArea.isoIds.length>0) && companyArea.employeeId);
     
     //setters
     setCompanyAreasWithIso(companyAreasWithIso);
@@ -285,7 +286,7 @@ function ResponsablesDelSistemaDigital({company, getCompany}:{ company: Company;
                                               </td>
 
                                               <td style={{ border: '1px solid black', padding: '8px' }}>
-                                                    <p >{area.responsibleEmployeeId?.email}</p>
+                                                    <p >{area.employeeId?.email}</p>
                                               </td>
 
                                               <td style={{ border: '1px solid black', padding: '8px' }}>

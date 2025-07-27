@@ -1,4 +1,5 @@
 import _api from "../_api";
+import Swal from "sweetalert2";
 
 const _api_calls_rol = {
 

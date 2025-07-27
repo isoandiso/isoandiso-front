@@ -43,7 +43,7 @@ const _api_calls_company_area = {
   
   async _deleteIsosOfArea(areaId:string) {
     try {
-        await _api.delete(`/companyArea/${areaId}/deleteIsos`);
+        await _api.delete(`/companyArea/deleteIsos/${areaId}`);
         await Swal.fire({
             icon: 'success',
             text: 'Isos eliminadas del área correctamente',
@@ -62,7 +62,7 @@ const _api_calls_company_area = {
   
   async _deleteEmployeeOfArea(areaId:string) {
     try {
-        await _api.delete(`/companyArea/${areaId}/deleteEmployee`);
+        await _api.delete(`/companyArea/deleteEmployee/${areaId}`);
         await Swal.fire({
             icon: 'success',
             text: 'Trabajador eliminado del área correctamente',
@@ -81,7 +81,7 @@ const _api_calls_company_area = {
   
   async _addIso(areaId:string,isoId:string) {
     try {
-      const { data } = await _api.put(`/companyArea/${areaId}/addIso`, { isoId: isoId });
+      const { data } = await _api.put(`/companyArea/addIso/${areaId}/${isoId}`);
       return data;
     } catch (error) {
         console.error('Error al agregar la isos al área:', error);
@@ -94,9 +94,9 @@ const _api_calls_company_area = {
     }
   },
   
-  async _updateResponsibleEmployee(areaId:string,responsibleEmployeeId:string) {
+  async _addResponsibleEmployee(areaId:string,employeeId:string) {
     try {
-      const { data } = await _api.put(`/companyArea/${areaId}/updateResponsibleEmployee`, { responsibleEmployeeId: responsibleEmployeeId });
+      const { data } = await _api.post(`/companyArea/addResponsibleEmployee/${areaId}/${employeeId}`);
       return data;
     } catch (error) {
       console.error("Error al actualizar el trabajador responsable del área:", error);

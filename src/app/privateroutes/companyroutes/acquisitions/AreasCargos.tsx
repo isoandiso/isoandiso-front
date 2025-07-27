@@ -18,8 +18,8 @@ function AreasCargos({company,getCompany}:{ company: Company; getCompany: () => 
 
   //FRONTEND
 
-  async function deleteOnClick(siteId:string){
-    await _api_calls_company_area._deleteCompanyArea(siteId);
+  async function deleteOnClick(areaId:string){
+    await _api_calls_company_area._deleteCompanyArea(areaId);
     await getCompany();
   }
 

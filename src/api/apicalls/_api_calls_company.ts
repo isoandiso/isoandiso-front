@@ -69,9 +69,7 @@ const _api_calls_company = {
 
     async _updateCompanyCountry(companyId:string, countryId:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/updateCountry`, {
-            countryId: countryId,
-          });
+          const { data } = await _api.put(`/company/updateCountry/${companyId}/${countryId}`);
           return data;
         } catch (error) {
           console.error((((error as AxiosError).response?.data as object) as any).message || "Error al intentar actualizar el país de la empresa:")
@@ -86,9 +84,7 @@ const _api_calls_company = {
 
     async _addAcquisitionIdToCompany(companyId:string, acquisitionId:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/addAcquisition`, {
-            acquisitionId,
-          });
+          const { data } = await _api.put(`/company/addAcquisition/${companyId}/${acquisitionId}`);
           return data;
         } catch (error) {
           console.error((((error as AxiosError).response?.data as object) as any).message || "Error al agregar la adquisición a la empresa:")
@@ -103,7 +99,7 @@ const _api_calls_company = {
 
     async _updateRuc(companyId:string,ruc:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/updateRuc`, { ruc: ruc });
+          const { data } = await _api.put(`/company/updateRuc/${companyId}`, { ruc: ruc });
           return data;
         } catch (error) {
           console.error((((error as AxiosError).response?.data as object) as any).message || "Error al actualizar el ruc de la empresa:")
@@ -118,7 +114,7 @@ const _api_calls_company = {
 
     async _updateSocialReason(companyId:string,socialReason:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/updateSocialReason`, { socialReason: socialReason });
+          const { data } = await _api.put(`/company/updateSocialReason/${companyId}`, { socialReason: socialReason });
           return data;
         } catch (error) {
             console.error((((error as AxiosError).response?.data as object) as any).message || "Error al actualizar la razón social de la empresa:")
@@ -133,7 +129,7 @@ const _api_calls_company = {
 
     async _updateProvince(companyId:string,province:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/updateProvince`, { province: province });
+          const { data } = await _api.put(`/company/updateProvince/${companyId}`, { province: province });
           return data;
         } catch (error) {
             console.error((((error as AxiosError).response?.data as object) as any).message || "Error al actualizar la provincia de la empresa:")
@@ -148,7 +144,7 @@ const _api_calls_company = {
 
     async _updateCity(companyId:string,city:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/updateCity`, { city: city });
+          const { data } = await _api.put(`/company/updateCity/${companyId}`, { city: city });
           return data;
         } catch (error) {
             console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al actualizar la ciudad de la empresa:');
@@ -163,7 +159,7 @@ const _api_calls_company = {
 
     async _updateAddress(companyId:string,address:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/updateAddress`, { address: address });
+          const { data } = await _api.put(`/company/updateAddress/${companyId}`, { address: address });
           return data;
         } catch (error) {
             console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al actualizar la dirección de la empresa:');
@@ -178,7 +174,7 @@ const _api_calls_company = {
 
     async _updateEconomicActivity(companyId:string,economicActivity:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/updateEconomicActivity`, { economicActivity: economicActivity });
+          const { data } = await _api.put(`/company/updateEconomicActivity/${companyId}`, { economicActivity: economicActivity });
           return data;
         } catch (error) {
             console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al actualizar la actividad económica de la empresa:');
@@ -193,7 +189,7 @@ const _api_calls_company = {
 
     async _updateEconomicSector(companyId:string,economicSector:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/updateEconomicSector`, { economicSector: economicSector });
+          const { data } = await _api.put(`/company/updateEconomicSector/${companyId}`, { economicSector: economicSector });
           return data;
         } catch (error) {
             console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al actualizar el sector económico de la empresa:');
@@ -208,7 +204,7 @@ const _api_calls_company = {
 
     async _updateCompanySize(companyId:string,companySize:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/updateCompanySize`, { companySize: companySize });
+          const { data } = await _api.put(`/company/updateCompanySize/${companyId}`, { companySize: companySize });
           return data;
         } catch (error) {
             console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al actualizar el tamaño de la empresa:');
@@ -223,7 +219,7 @@ const _api_calls_company = {
 
     async _addSedeIdToCompany(companyId:string,companySiteId:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/addSite`, { companySiteId: companySiteId });
+          const { data } = await _api.put(`/company/addSite/${companyId}/${companySiteId}`);
           return data;
         } catch (error) {
             console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al agregar la sede a la empresa:');
@@ -238,7 +234,7 @@ const _api_calls_company = {
 
     async _addAreaIdToCompany(companyId:string,companyAreaId:string) {
         try {
-          const { data } = await _api.put(`/company/${companyId}/addArea`, { companyAreaId: companyAreaId });
+          const { data } = await _api.put(`/company/addArea/${companyId}/${companyAreaId}`);
           return data;
         } catch (error) {
             console.error((((error as AxiosError).response?.data as object) as any).message || 'Error al agregar el área a la empresa:');

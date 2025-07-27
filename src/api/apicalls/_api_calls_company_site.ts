@@ -11,7 +11,7 @@ const _api_calls_company_site = {
           province: province
       };
       try {
-          const { data } = await _api.post('/companySite', sedeData);
+          const { data } = await _api.post(`/companySite`, sedeData);
           return data;
         } catch (error) {
             console.error('Error al crear la sede:', error);
